@@ -717,13 +717,8 @@
             <h1>Meal & Play</h1>
         </header>
 
-        <nav class="nav-tabs">
-            <button class="nav-tab active" data-tab="favorites">Preferiti</button>
-            <button class="nav-tab" data-tab="menu">Menu</button>
-            <button class="nav-tab" data-tab="activities">Attività</button>
-        </nav>
-
-        <section id="favorites-section" class="section">
+        <main class="container">
+            <section id="favorites-section" class="section">
             <div id="install-prompt-container" style="display: none; margin-bottom: 1.5rem;">
                 <div style="background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%); color: white; padding: 1.5rem; border-radius: 20px; text-align: center; box-shadow: 0 8px 25px rgba(66, 153, 225, 0.3);">
                     <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;">📱 Installa Meal & Play</h3>
@@ -743,28 +738,7 @@
                 </button>
             </div>
         </section>
-
-        <section id="menu-section" class="section hidden">
-            <div class="selectors">
-                <button class="selector-btn active" data-menu-type="nido">Piccoli</button>
-                <button class="selector-btn" data-menu-type="infanzia">Grandi</button>
-            </div>
-            <div id="quick-view">
-                <div class="loading">Caricamento menu in corso...</div>
-            </div>
-        </section>
-
-        <section id="activities-section" class="section hidden">
-            <div class="selectors">
-                <button class="selector-btn active" data-activity-group="nido">Nido</button>
-                <button class="selector-btn" data-activity-group="primavera">Primavera</button>
-                <button class="selector-btn" data-activity-group="infanzia1">Infanzia 1</button>
-                <button class="selector-btn" data-activity-group="infanzia2">Infanzia 2</button>
-            </div>
-            <div id="activities-content">
-                <div class="loading">Caricamento attività in corso...</div>
-            </div>
-        </section>
+        </main>
 
         <footer>
             <p>Made with love for little ones</p>
@@ -817,6 +791,36 @@
             <div class="modal-actions">
                 <button type="button" class="modal-btn cancel" onclick="closeDeleteModal()">Annulla</button>
                 <button type="button" class="modal-btn save" onclick="confirmDelete()">Elimina</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Menu Modal -->
+    <div id="full-menu-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="full-menu-title">Menu Completo</h2>
+            </div>
+            <div id="full-menu-content">
+                <div class="loading">Caricamento menu in corso...</div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="modal-btn cancel" onclick="closeFullMenuModal()">Chiudi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Activities Modal -->
+    <div id="full-activities-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="full-activities-title">Attività Complete</h2>
+            </div>
+            <div id="full-activities-content">
+                <div class="loading">Caricamento attività in corso...</div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="modal-btn cancel" onclick="closeFullActivitiesModal()">Chiudi</button>
             </div>
         </div>
     </div>
@@ -1044,11 +1048,16 @@
             let html = '<div class="combinations-grid">';
             combinations.forEach(combination => {
                 const currentData = getCurrentMenuAndActivities(combination.menuType, combination.activityGroup);
+                const menuTypeName = combination.menuType === 'nido' ? 'Piccoli' : 'Grandi';
+                const activityGroupName = getActivityGroupName(combination.activityGroup);
                 
                 html += `
                     <div class="combination-card">
                         <button class="delete-icon" onclick="openDeleteModal('${combination.id}')" title="Rimuovi preferito">×</button>
                         <h3>${combination.name}</h3>
+                        <p style="color: #718096; font-size: 0.9rem; margin-bottom: 1rem;">
+                            Menu: ${menuTypeName} | Attività: ${activityGroupName}
+                        </p>
                         
                         <div class="current-info today-info-${combination.id}">
                             <h4>Oggi - ${currentData.today.day} <button class="mini-toggle-btn" style="float: right;" onmousedown="showTomorrowTemporarily('${combination.id}')" onmouseup="hideTomorrowTemporarily('${combination.id}')" onmouseleave="hideTomorrowTemporarily('${combination.id}')" ontouchstart="showTomorrowTemporarily('${combination.id}')" ontouchend="hideTomorrowTemporarily('${combination.id}')" ontouchcancel="hideTomorrowTemporarily('${combination.id}')">Domani</button></h4>
@@ -1082,6 +1091,15 @@
                                     <small>${currentData.tomorrow.activity.replace(/<br>/g, ' • ')}</small>
                                 </div>
                             ` : '<p class="no-data">Nessuna attività domani</p>'}
+                        </div>
+                        
+                        <div class="combination-actions" style="margin-top: 1.5rem;">
+                            <button class="modal-btn save" onclick="showFullMenu('${combination.menuType}', '${menuTypeName}')" style="flex: 1;">
+                                📋 Menu Completo
+                            </button>
+                            <button class="modal-btn save" onclick="showFullActivities('${combination.activityGroup}', '${activityGroupName}')" style="flex: 1;">
+                                🎯 Attività Complete
+                            </button>
                         </div>
                     </div>
                 `;
@@ -1239,38 +1257,6 @@
             };
         }
 
-        // Display functions
-        function displayQuickView() {
-            const quickView = document.getElementById('quick-view');
-            const today = new Date();
-            const currentWeek = getWeekNumber(today);
-            const currentDay = getCurrentDay(today);
-            
-            console.log('Displaying quick view:', { currentWeek, currentDay, currentMenuType });
-            
-            quickView.innerHTML = '';
-            
-            const quickViewHeader = document.createElement('div');
-            quickViewHeader.className = 'quick-view-header';
-            quickViewHeader.innerHTML = `<h2>Settimana ${currentWeek}</h2>`;
-            quickView.appendChild(quickViewHeader);
-            
-            const menuContainer = document.createElement('div');
-            menuContainer.className = 'menu-container';
-            
-            const dayOrder = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'];
-            const menuData = currentMenuType === 'nido' ? MENU_NIDO : MENU_INFANZIA;
-            
-            for (const day of dayOrder) {
-                if (menuData[currentWeek] && menuData[currentWeek][day]) {
-                    const dayCard = createDayCard(day, menuData[currentWeek][day], currentDay);
-                    menuContainer.appendChild(dayCard);
-                }
-            }
-            
-            quickView.appendChild(menuContainer);
-        }
-
         function createDayCard(day, menu, currentDay) {
             const dayCard = document.createElement('div');
             dayCard.className = 'day-card';
@@ -1289,31 +1275,6 @@
             `;
             
             return dayCard;
-        }
-
-        function displayActivities() {
-            const activitiesContent = document.getElementById('activities-content');
-            const today = new Date();
-            const currentDay = getCurrentDay(today);
-            
-            console.log('Displaying activities:', { currentDay, currentActivityGroup });
-            
-            activitiesContent.innerHTML = '';
-            
-            const activitiesGrid = document.createElement('div');
-            activitiesGrid.className = 'activities-grid';
-            
-            const dayOrder = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
-            const activitiesData = ACTIVITIES[currentActivityGroup];
-            
-            for (const day of dayOrder) {
-                if (activitiesData && activitiesData[day]) {
-                    const dayCard = createActivityDayCard(day, activitiesData[day], currentDay);
-                    activitiesGrid.appendChild(dayCard);
-                }
-            }
-            
-            activitiesContent.appendChild(activitiesGrid);
         }
 
         function createActivityDayCard(day, activities, currentDay) {
@@ -1360,83 +1321,6 @@
             return dayCard;
         }
 
-        // Tab switching
-        async function switchTab(tab) {
-            currentTab = tab;
-            
-            // Update tab buttons
-            document.querySelectorAll('.nav-tab').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            const clickedTab = document.querySelector(`[data-tab="${tab}"]`);
-            if (clickedTab) {
-                clickedTab.classList.add('active');
-            }
-            
-            // Hide all sections
-            document.getElementById('favorites-section').classList.add('hidden');
-            document.getElementById('menu-section').classList.add('hidden');
-            document.getElementById('activities-section').classList.add('hidden');
-            
-            // Show selected section
-            if (tab === 'favorites') {
-                document.getElementById('favorites-section').classList.remove('hidden');
-                // Ensure data is loaded before displaying favorites
-                if (Object.keys(MENU_NIDO).length === 0 || Object.keys(MENU_INFANZIA).length === 0 || Object.keys(ACTIVITIES).length === 0) {
-                    await loadMenuData();
-                    await loadActivitiesData();
-                }
-                displayFavorites();
-            } else if (tab === 'menu') {
-                document.getElementById('menu-section').classList.remove('hidden');
-                if (Object.keys(MENU_NIDO).length === 0 || Object.keys(MENU_INFANZIA).length === 0) {
-                    await loadMenuData();
-                }
-                displayQuickView();
-            } else if (tab === 'activities') {
-                document.getElementById('activities-section').classList.remove('hidden');
-                if (Object.keys(ACTIVITIES).length === 0) {
-                    await loadActivitiesData();
-                }
-                displayActivities();
-            }
-        }
-
-        // Menu type selection
-        function selectMenuType(type) {
-            currentMenuType = type;
-            
-            // Update selector buttons
-            document.querySelectorAll('#menu-section .selector-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            const clickedBtn = document.querySelector(`#menu-section [data-menu-type="${type}"]`);
-            if (clickedBtn) {
-                clickedBtn.classList.add('active');
-            }
-            
-            displayQuickView();
-        }
-
-        // Activity group selection
-        function selectActivityGroup(group) {
-            currentActivityGroup = group;
-            
-            // Update selector buttons
-            document.querySelectorAll('#activities-section .selector-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            const clickedBtn = document.querySelector(`#activities-section [data-activity-group="${group}"]`);
-            if (clickedBtn) {
-                clickedBtn.classList.add('active');
-            }
-            
-            displayActivities();
-        }
-
         // Initialize app
         async function initApp() {
             console.log('Initializing app...');
@@ -1445,7 +1329,7 @@
             await loadActivitiesData();
             loadCombinations();
             
-            // Display favorites on initial load since favorites tab is active by default
+            // Display favorites on initial load
             displayFavorites();
             
             console.log('App initialized successfully');
@@ -1490,33 +1374,97 @@
                    window.navigator.standalone === true;
         }
 
+        // Full Menu Modal functions
+        function showFullMenu(menuType, menuTypeName) {
+            const modal = document.getElementById('full-menu-modal');
+            const title = document.getElementById('full-menu-title');
+            const content = document.getElementById('full-menu-content');
+            
+            title.textContent = `Menu Completo - ${menuTypeName}`;
+            
+            // Display full menu for the selected type
+            displayFullMenu(menuType, content);
+            
+            modal.classList.add('active');
+        }
+
+        function closeFullMenuModal() {
+            const modal = document.getElementById('full-menu-modal');
+            modal.classList.remove('active');
+        }
+
+        function displayFullMenu(menuType, container) {
+            const today = new Date();
+            const currentWeek = getWeekNumber(today);
+            const currentDay = getCurrentDay(today);
+            
+            container.innerHTML = '';
+            
+            const quickViewHeader = document.createElement('div');
+            quickViewHeader.className = 'quick-view-header';
+            quickViewHeader.innerHTML = `<h2>Settimana ${currentWeek}</h2>`;
+            container.appendChild(quickViewHeader);
+            
+            const menuContainer = document.createElement('div');
+            menuContainer.className = 'menu-container';
+            
+            const dayOrder = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'];
+            const menuData = menuType === 'nido' ? MENU_NIDO : MENU_INFANZIA;
+            
+            for (const day of dayOrder) {
+                if (menuData[currentWeek] && menuData[currentWeek][day]) {
+                    const dayCard = createDayCard(day, menuData[currentWeek][day], currentDay);
+                    menuContainer.appendChild(dayCard);
+                }
+            }
+            
+            container.appendChild(menuContainer);
+        }
+
+        // Full Activities Modal functions
+        function showFullActivities(activityGroup, activityGroupName) {
+            const modal = document.getElementById('full-activities-modal');
+            const title = document.getElementById('full-activities-title');
+            const content = document.getElementById('full-activities-content');
+            
+            title.textContent = `Attività Complete - ${activityGroupName}`;
+            
+            // Display full activities for the selected group
+            displayFullActivities(activityGroup, content);
+            
+            modal.classList.add('active');
+        }
+
+        function closeFullActivitiesModal() {
+            const modal = document.getElementById('full-activities-modal');
+            modal.classList.remove('active');
+        }
+
+        function displayFullActivities(activityGroup, container) {
+            const today = new Date();
+            const currentDay = getCurrentDay(today);
+            
+            container.innerHTML = '';
+            
+            const activitiesGrid = document.createElement('div');
+            activitiesGrid.className = 'activities-grid';
+            
+            const dayOrder = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+            const activitiesData = ACTIVITIES[activityGroup];
+            
+            for (const day of dayOrder) {
+                if (activitiesData && activitiesData[day]) {
+                    const dayCard = createActivityDayCard(day, activitiesData[day], currentDay);
+                    activitiesGrid.appendChild(dayCard);
+                }
+            }
+            
+            container.appendChild(activitiesGrid);
+        }
+
         // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM loaded');
-            
-            // Tab navigation
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.addEventListener('click', async function() {
-                    const tabName = this.getAttribute('data-tab');
-                    await switchTab(tabName);
-                });
-            });
-            
-            // Menu type selector
-            document.querySelectorAll('#menu-section .selector-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const menuType = this.getAttribute('data-menu-type');
-                    selectMenuType(menuType);
-                });
-            });
-            
-            // Activity group selector
-            document.querySelectorAll('#activities-section .selector-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const activityGroup = this.getAttribute('data-activity-group');
-                    selectActivityGroup(activityGroup);
-                });
-            });
             
             // Combination form submit
             document.getElementById('combination-form').addEventListener('submit', function(e) {
