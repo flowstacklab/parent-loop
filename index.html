@@ -724,6 +724,15 @@
         </nav>
 
         <section id="favorites-section" class="section">
+            <div id="install-prompt-container" style="display: none; margin-bottom: 1.5rem;">
+                <div style="background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%); color: white; padding: 1.5rem; border-radius: 20px; text-align: center; box-shadow: 0 8px 25px rgba(66, 153, 225, 0.3);">
+                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;">📱 Installa Meal & Play</h3>
+                    <p style="margin: 0 0 1rem 0; font-size: 0.9rem; opacity: 0.9;">Installa l'app per un accesso rapido e notifiche!</p>
+                    <button id="install-btn" style="background: white; color: #3182ce; border: none; padding: 0.8rem 2rem; border-radius: 25px; font-weight: 600; cursor: pointer; font-size: 1rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0, 0, 0, 0.2)'">
+                        Installa App
+                    </button>
+                </div>
+            </div>
             <div id="favorites-content">
                 <div class="loading">Nessun preferito salvato. Clicca su "Aggiungi" per iniziare!</div>
             </div>
@@ -824,6 +833,7 @@
         let combinations = [];
         let editingCombinationId = null;
         let deleteTargetId = null;
+        let deferredPrompt = null;
 
         // Utility functions
         function getCurrentDay(date) {
@@ -1441,6 +1451,45 @@
             console.log('App initialized successfully');
         }
 
+        // PWA Install functionality
+        function showInstallPrompt() {
+            const installContainer = document.getElementById('install-prompt-container');
+            if (installContainer && deferredPrompt) {
+                installContainer.style.display = 'block';
+            }
+        }
+
+        function hideInstallPrompt() {
+            const installContainer = document.getElementById('install-prompt-container');
+            if (installContainer) {
+                installContainer.style.display = 'none';
+            }
+        }
+
+        async function installApp() {
+            if (!deferredPrompt) {
+                console.log('Install prompt not available');
+                return;
+            }
+
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response to the install prompt: ${outcome}`);
+
+            if (outcome === 'accepted') {
+                console.log('App was installed');
+                hideInstallPrompt();
+            }
+
+            deferredPrompt = null;
+        }
+
+        // Check if app is already installed
+        function isAppInstalled() {
+            return window.matchMedia('(display-mode: standalone)').matches || 
+                   window.navigator.standalone === true;
+        }
+
         // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM loaded');
@@ -1499,9 +1548,46 @@
                 displayFavorites();
                 closeCombinationModal();
             });
+
+            // PWA Install button event
+            const installBtn = document.getElementById('install-btn');
+            if (installBtn) {
+                installBtn.addEventListener('click', installApp);
+            }
+
+            // Check if app is already installed and hide install prompt if so
+            if (isAppInstalled()) {
+                hideInstallPrompt();
+            } else {
+                // Show install prompt after a short delay if app is not installed
+                setTimeout(() => {
+                    showInstallPrompt();
+                }, 2000);
+            }
             
             // Start app
             initApp();
+        });
+
+        // Listen for beforeinstallprompt event
+        window.addEventListener('beforeinstallprompt', function(e) {
+            console.log('beforeinstallprompt fired');
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install prompt if not already installed
+            if (!isAppInstalled()) {
+                setTimeout(() => {
+                    showInstallPrompt();
+                }, 1000);
+            }
+        });
+
+        // Listen for app installed event
+        window.addEventListener('appinstalled', function() {
+            console.log('App was installed');
+            hideInstallPrompt();
+            deferredPrompt = null;
         });
     </script>
     <script>
