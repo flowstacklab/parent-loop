@@ -1,37 +1,35 @@
-# Menu Asilo - Guida
+# Meal & Play - App Asilo
 
 ## 📱 Progressive Web App (PWA)
 
-Questa applicazione è una **PWA installabile**! Gli utenti possono installarla sui loro dispositivi come una vera app.
+Questa applicazione è una **PWA installabile** per visualizzare menu e attività dell'asilo! Gli utenti possono installarla sui loro dispositivi come una vera app.
 
 ### File PWA
 - **manifest.json** - Configurazione PWA
-- **service-worker.js** - Gestione cache e offline
-- **icon.svg** - Icona vettoriale dell'app
-- **generate-icons.html** - Tool per generare icone PNG
-- **PWA-SETUP.md** - Guida completa setup PWA
-
-👉 **Leggi [PWA-SETUP.md](PWA-SETUP.md) per istruzioni dettagliate su installazione e pubblicazione**
+- **sw.js** - Service worker per gestione cache e offline
+- **icon-192.png / icon-512.png** - Icone dell'app
 
 ## Struttura del Progetto
 
-- **menu.html** - Pagina principale dell'applicazione (contiene anche i dati del menu)
-- **menu.txt** - File di riferimento per il formato del menu
+- **index.html** - Pagina principale dell'applicazione
+- **week-config.txt** - Configurazione data di inizio settimane
+- **menu-nido.txt** - Menu per gruppo Piccoli (Nido)
+- **menu-infanzia.txt** - Menu per gruppo Grandi (Infanzia)
+- **activities.txt** - Attività per tutti i gruppi
 - **README.md** - Questo file
 
 ## ⚙️ Configurazione Iniziale - IMPORTANTE
 
 ### Impostare la Data di Inizio
 
-Prima di utilizzare l'applicazione, è **fondamentale** configurare la data del lunedì della prima settimana:
+Prima di utilizzare l'applicazione, configura la data del lunedì della prima settimana:
 
-1. Apri il file `menu.html` con un editor di testo
-2. Cerca la riga con la costante `WEEK_1_MONDAY` (circa riga 830)
-3. Modifica la data nel formato `YYYY-MM-DD`
+1. Apri il file `week-config.txt`
+2. Modifica la data nel formato `YYYY-MM-DD`
 
 **Esempio:**
-```javascript
-const WEEK_1_MONDAY = '2025-10-20';  // Lunedì 20 ottobre 2025
+```
+2025-10-20
 ```
 
 ⚠️ **Importante**: La data deve essere un **lunedì**. Questa data determina l'inizio del ciclo di 4 settimane.
@@ -44,109 +42,127 @@ L'applicazione calcola automaticamente:
 - Il giorno corrente e quello di domani
 - Gestisce il weekend mostrando la prossima settimana
 
-**Esempio di ciclo:**
-- Settimana del 20/10/2025: Settimana 1
-- Settimana del 27/10/2025: Settimana 2
-- Settimana del 03/11/2025: Settimana 3
-- Settimana del 10/11/2025: Settimana 4
-- Settimana del 17/11/2025: Settimana 1 (il ciclo ricomincia)
+## Come Modificare i Dati ⭐
 
-## Come Modificare il Menu ⭐
+### Menu
 
-Il menu è ora in un **file di testo separato** (`menu-data.txt`) facile da modificare!
+**File da modificare:**
+- `menu-nido.txt` - Menu per gruppo Piccoli
+- `menu-infanzia.txt` - Menu per gruppo Grandi
 
-### Passi per Modificare:
-
-**Metodo Rapido (Consigliato):**
-1. Apri il file `menu-data.txt` con un editor di testo
-2. Modifica i piatti seguendo il formato
-3. Salva il file
-4. Se pubblicato su GitHub: commit e push (aggiornamento automatico!)
-
-**Metodo GitHub (Se pubblicato online):**
-1. Vai sul repository GitHub
-2. Clicca su `menu-data.txt`
-3. Clicca l'icona ✏️ (Edit)
-4. Modifica
-5. "Commit changes" → **L'app si aggiorna subito!**
-
-👉 **Leggi [COME-MODIFICARE-MENU.md](COME-MODIFICARE-MENU.md) per guida dettagliata**
-
-## Formato del Menu
-
-Il menu usa un formato semplice basato su righe separate dal carattere pipe (`|`).
-
-### Formato Riga
-
+**Formato:**
 ```
 settimana|giorno|primo|secondo|frutta
 ```
 
-### Parametri
-
-- **settimana**: Numero da 1 a 4 (rappresenta quale settimana del ciclo mensile)
-- **giorno**: Numero da 1 a 6:
-  - 1 = Lunedì
-  - 2 = Martedì
-  - 3 = Mercoledì
-  - 4 = Giovedì
-  - 5 = Venerdì
-  - 6 = Sabato
-- **primo**: Nome del primo piatto
-- **secondo**: Nome del secondo piatto
-- **frutta**: Tipo di frutta
-
-### Esempio
-
+**Esempio:**
 ```
 1|1|Pasta al pomodoro|Pollo alla griglia|Mela
 1|2|Risotto ai funghi|Bistecca di manzo|Pera
 ```
 
-Questa configurazione significa:
-- Settimana 1, Lunedì: Pasta al pomodoro, Pollo alla griglia, Mela
-- Settimana 1, Martedì: Risotto ai funghi, Bistecca di manzo, Pera
+### Attività
 
-### Commenti
+**File da modificare:** `activities.txt`
 
-Puoi aggiungere commenti nel file usando il carattere `#` all'inizio della riga:
-
+**Formato:**
 ```
-# Questo è un commento
-# Settimana 1
-1|1|Pasta al pomodoro|Pollo alla griglia|Mela
+gruppo|giorno|attivita_mattino|attivita_pomeriggio
 ```
 
-Le righe vuote vengono ignorate automaticamente.
+**Esempi:**
+```
+nido|1|Gioco libero|Letto|
+primavera|1|Laboratorio creativo|Gioco all'aperto|
+infanzia1|1|Musica|Sport|
+infanzia2|1|-|Lettura|
+```
 
-## Perché il Menu è nel File HTML?
+**Gruppi disponibili:**
+- `nido` - Nido
+- `primavera` - Sezione Primavera
+- `infanzia1` - Infanzia 1
+- `infanzia2` - Infanzia 2
 
-I browser moderni bloccano il caricamento di file esterni (come `menu.txt`) quando si apre direttamente un file HTML per motivi di sicurezza. Per questo motivo, il menu è incorporato direttamente nel file HTML, permettendo comunque una modifica facile e rapida.
+**Giorni:**
+- `1` = Lunedì
+- `2` = Martedì
+- `3` = Mercoledì
+- `4` = Giovedì
+- `5` = Venerdì
+- `6` = Sabato
+
+**Valori speciali:**
+- `-` = Nessuna attività per quel momento della giornata
 
 ## Funzionalità dell'Applicazione
 
-### Visualizzazione Intelligente
-- **Giorno corrente**: Evidenziato con bordo arancione e badge "Oggi"
-- **Giorno di domani**: Evidenziato con bordo verde e badge "Domani"
-- **Date visualizzate**: Ogni giorno mostra la data effettiva (es: "Lunedì 20/10")
-- **Sabato incluso**: Il sabato è incluso nel menu settimanale
-- **Domenica**: Solo la domenica mostra automaticamente la prossima settimana
+### Sezioni Principali
 
-### Vista Rapida (Predefinita)
-Mostra solo i giorni dalla data corrente in poi della settimana in corso
+1. **Preferiti** - Salva e visualizza combinazioni personalizzate di menu e attività
+2. **Menu** - Visualizza menu settimanale per Piccoli/Grandi
+3. **Attività** - Visualizza attività giornaliere suddivise per gruppo
 
-### Vista Tutte le Settimane
-Cliccando sul pulsante "Tutte le Settimane" puoi:
-- Vedere tutte e 4 le settimane del ciclo
-- Navigare velocemente tra le settimane con la timeline
-- Vedere le date effettive di ogni settimana
+### Visualizzazione Menu
 
-## Note Importanti
+- **Tipologia**: Seleziona tra "Piccoli" (Nido) e "Grandi" (Infanzia)
+- **Giorno corrente**: Evidenziato con stile speciale
+- **Struttura**: Primo, Secondo, Frutta per ogni giorno
 
-- La domenica non è inclusa nel menu (l'asilo è chiuso)
-- Il sabato è incluso nel menu settimanale
-- Il ciclo si ripete automaticamente ogni 4 settimane
-- Non usare il carattere `|` nei nomi dei piatti (usa alternative come "e" invece di "|")
-- Il menu è già precaricato con tutte le 4 settimane nel file HTML
-- Se modifichi il formato, assicurati di mantenere la struttura `settimana|giorno|primo|secondo|frutta`
-- La data configurata viene mostrata nel footer della pagina per riferimento
+### Visualizzazione Attività
+
+- **Gruppi**: Nido, Primavera, Infanzia 1, Infanzia 2
+- **Suddivisione**: Mattino 🌅 e Pomeriggio 🌇 separati
+- **Giorno corrente**: Evidenziato con stile speciale
+
+### Preferiti
+
+Crea combinazioni personalizzate con:
+- Nome personalizzato
+- Scelta tipologia menu
+- Scelta gruppo attività
+- Visualizzazione rapida di oggi/domani
+
+## Gestione Cache
+
+L'applicazione è configurata per **non utilizzare cache**:
+- Meta tag anti-cache nel HTML
+- Cache-busting con timestamp nei caricamenti
+- Service worker con strategia network-first per i dati
+
+Questo garantisce che i dati siano sempre aggiornati.
+
+## Note Tecniche
+
+- **Responsive design**: Ottimizzato per mobile e desktop
+- **PWA**: Installabile su dispositivi supportati
+- **Offline**: Funzionalità base disponibili offline
+- **Auto-aggiornamento**: I dati si aggiornano automaticamente al ricaricamento
+- **LocalStorage**: I preferiti sono salvati localmente sul dispositivo
+
+## Formati File Dettagliati
+
+### Menu (menu-nido.txt / menu-infanzia.txt)
+```
+# Commenti iniziano con #
+# Settimana 1
+1|1|Pasta al pomodoro|Pollo alla griglia|Mela
+1|2|Risotto ai funghi|Bistecca di manzo|Pera
+```
+
+### Attività (activities.txt)
+```
+# Attività Nido
+nido|1|Gioco libero|Letto|
+nido|2|Laboratorio creativo|Gioco all'aperto|
+
+# Attività con solo pomeriggio
+primavera|3|-|Lettura|
+```
+
+## Supporto
+
+Per problemi o domande:
+1. Verifica il formato dei file dati
+2. Controlla la configurazione di `week-config.txt`
+3. Ricarica la pagina per aggiornare i dati

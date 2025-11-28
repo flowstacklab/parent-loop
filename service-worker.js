@@ -1,4 +1,4 @@
-const CACHE_NAME = 'menu-asilo-v9';
+const CACHE_NAME = 'mep-v1';
 const urlsToCache = [];
 
 // Installazione del Service Worker

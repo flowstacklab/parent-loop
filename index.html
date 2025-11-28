@@ -3,1212 +3,356 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu della Settimana</title>
-    
-    <!-- PWA Meta Tags -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Meal & Play</title>
     <meta name="description" content="L'asilo a portata di mano">
-    <meta name="theme-color" content="#4a5f6b">
+    <meta name="theme-color" content="#667eea">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Menu Asilo">
-    
-    <!-- Manifest -->
+    <meta name="apple-mobile-web-app-title" content="Menu Asilo Magic">
     <link rel="manifest" href="manifest.json">
-    
-    <!-- Icons -->
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* General styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        html {
-            scroll-behavior: smooth;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #4a5f6b 0%, #5a7280 100%);
-            color: #2c3e50;
+            background: linear-gradient(135deg, #ff7b00 0%, #e91e63 50%, #ff4081 100%);
+            color: #2d3748;
             line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             min-height: 100vh;
+            padding: 1rem;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 1rem;
         }
 
-        /* Header styles */
         header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
+            padding: 1rem 0.5rem;
         }
 
         h1 {
             color: #ffffff;
             font-weight: 700;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            font-size: 2.2rem;
+            margin-bottom: 0.3rem;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .week-info {
-            color: #b8c9d4;
-            font-size: 1.1rem;
+            color: #e9d5ff;
+            font-size: 1.2rem;
+            font-weight: 400;
         }
 
-        /* Navigation tabs */
         .nav-tabs {
             display: flex;
             justify-content: center;
             gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: nowrap;
-            overflow-x: auto;
+            margin-bottom: 1rem;
         }
 
         .nav-tab {
-            padding: 0.75rem 1.5rem;
+            padding: 0.5rem 1rem;
             border: none;
-            border-radius: 25px;
-            font-size: 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.15);
-            color: #e0e8ed;
-            box-shadow: none;
-            flex-shrink: 0;
-            white-space: nowrap;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333333;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
         .nav-tab.active {
-            background: #ffffff;
-            color: #4a5f6b;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: #ffffff;
+            box-shadow: 0 8px 30px rgba(66, 153, 225, 0.4);
+            transform: scale(1.05);
         }
 
-        @media (hover: hover) {
-            .nav-tab:not(.active):hover {
-                background: rgba(255, 255, 255, 0.25);
-                transform: translateY(-2px);
-            }
+        .section {
+            background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+            border-radius: 30px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        /* Selectors */
-        .selector-container {
+        .section.hidden {
+            display: none;
+        }
+
+        .selectors {
             display: flex;
             justify-content: center;
-            align-items: center;
             gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .selector-label {
-            font-weight: 600;
-            color: #ffffff;
-            font-size: 1rem;
-        }
-
-        .selector-buttons {
-            display: flex;
-            gap: 0.5rem;
+            margin-bottom: 2rem;
             flex-wrap: wrap;
         }
 
         .selector-btn {
-            padding: 0.6rem 1.2rem;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
-            font-size: 0.9rem;
+            padding: 0.8rem 1.8rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.1);
-            color: #e0e8ed;
+            background: linear-gradient(135deg, #ff7b00 0%, #e91e63 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .selector-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
 
         .selector-btn.active {
-            background: #a0d9e8;
-            color: #4a5f6b;
-            border-color: #a0d9e8;
-            box-shadow: 0 3px 10px rgba(160, 217, 232, 0.4);
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            box-shadow: 0 8px 30px rgba(66, 153, 225, 0.4);
+            border: 3px solid #2b6cb0;
         }
 
-        @media (hover: hover) {
-            .selector-btn:hover:not(.active) {
-                background: rgba(255, 255, 255, 0.2);
-                border-color: rgba(255, 255, 255, 0.5);
-                transform: translateY(-2px);
-            }
+        /* Activities section specific layout - 2x2 grid */
+        #activities-section .selectors {
+            max-width: 400px;
+            margin: 0 auto 2rem;
         }
 
-        /* Control buttons - Top right position */
-        .controls {
-            position: fixed;
-            right: 1rem;
-            top: 1rem;
-            display: flex;
-            flex-direction: row;
-            gap: 0.5rem;
-            z-index: 1000;
-        }
-
-        .btn {
-            padding: 0.6rem 1rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-            white-space: nowrap;
-        }
-
-        .btn-primary {
-            background: #586a75;
-            color: white;
-            border: none;
-        }
-
-        @media (hover: hover) {
-            .btn-primary:hover {
-                background: #647783;
-                transform: translateY(-2px);
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            }
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.4);
-        }
-
-        @media (hover: hover) {
-            .btn-secondary:hover {
-                background: rgba(255, 255, 255, 0.3);
-                border-color: rgba(255, 255, 255, 0.6);
-                transform: translateY(-2px);
-            }
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        /* Hidden sections */
-        .hidden {
-            display: none;
-        }
-
-        /* Timeline for all weeks view */
-        .timeline-container {
-            position: sticky;
-            top: 0;
-            z-index: 999;
-            background: #ffffff;
-            padding: 1rem;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-            margin-bottom: 1.5rem;
-            border-radius: 20px;
-        }
-
-        .timeline {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 10%;
-            right: 10%;
-            height: 3px;
-            background: #e0e0e0;
-            transform: translateY(-50%);
-            z-index: 0;
-        }
-
-        .timeline-item {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .timeline-dot {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: white;
-            border: 3px solid #e0e0e0;
+        #activities-section .selector-btn {
+            flex: 0 0 calc(50% - 0.5rem);
+            min-width: 0;
+            height: auto;
+            min-height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 1rem;
-            color: #999;
-            transition: all 0.3s ease;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-item.current .timeline-dot {
-            border-color: #4CAF50;
-            background: white;
-            color: #4CAF50;
-            position: relative;
-        }
-
-        .timeline-item.current .timeline-dot::after {
-            content: '●';
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            font-size: 1.2rem;
-            color: #4CAF50;
-            animation: pulse-current 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse-current {
-            0%, 100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.6;
-                transform: scale(1.1);
-            }
-        }
-
-        .timeline-item.active .timeline-dot {
-            border-color: #a0d9e8;
-            background: #a0d9e8;
-            color: #4a5f6b;
-            transform: scale(1.2);
-            box-shadow: 0 4px 15px rgba(160, 217, 232, 0.5);
-        }
-
-        .timeline-item.current.active .timeline-dot {
-            border-color: #4CAF50;
-            background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
-            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
-        }
-
-        .timeline-label {
-            font-size: 0.75rem;
-            color: #999;
-            font-weight: 600;
+            text-align: center;
             white-space: nowrap;
-        }
-
-        .timeline-item.current .timeline-label {
-            color: #4CAF50;
-            font-weight: 700;
-        }
-
-        .timeline-item.active .timeline-label {
-            color: #a0d9e8;
-            font-weight: 700;
-        }
-
-        .timeline-item.current.active .timeline-label {
-            color: #4CAF50;
-        }
-
-        /* Quick view section */
-        #quick-view {
-            margin-bottom: 1.5rem;
         }
 
         .quick-view-header {
             text-align: center;
-            padding: 1rem 1.5rem;
-            border-radius: 20px;
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #ff9a56 0%, #ff6b95 100%);
+            border-radius: 15px;
+            color: white;
+            display: inline-block;
         }
 
         .quick-view-header h2 {
-            margin: 0;
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .quick-view-header h2::before {
-            content: '';
-            font-size: 1.3rem;
-        }
-
-        .quick-view-header.week-1 {
-            background: #a0d9e8;
-        }
-
-        .quick-view-header.week-1 h2 {
-            color: #4a5f6b;
-            text-shadow: none;
-        }
-
-        .quick-view-header.week-2 {
-            background: #8ecae6;
-        }
-
-        .quick-view-header.week-2 h2 {
-            color: #4a5f6b;
-            text-shadow: none;
-        }
-
-        .quick-view-header.week-3 {
-            background: #7bb8d1;
-        }
-
-        .quick-view-header.week-3 h2 {
-            color: #4a5f6b;
-            text-shadow: none;
-        }
-
-        .quick-view-header.week-4 {
-            background: #6ba5bd;
-        }
-
-        .quick-view-header.week-4 h2 {
-            color: #4a5f6b;
-            text-shadow: none;
-        }
-
-        /* Week section */
-        .week-section {
-            margin-bottom: 2rem;
-            padding: 2rem;
-            border-radius: 25px;
-            background: #ffffff;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
-            border: none;
-        }
-
-        /* Color coding for weeks - Stile clean */
-        .week-section.week-1 {
-            background: #ffffff;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
-        }
-
-        .week-section.week-1 .week-title {
-            color: #4a5f6b;
-            border-bottom: 2px solid #e8eff3;
-            text-shadow: none;
-        }
-
-        .week-section.week-1 .day-card:not(.today):not(.tomorrow) {
-            background: white;
-            border: 2px solid #e8eff3;
-        }
-
-        .week-section.week-2 {
-            background: #ffffff;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
-        }
-
-        .week-section.week-2 .week-title {
-            color: #4a5f6b;
-            border-bottom: 2px solid #e8eff3;
-            text-shadow: none;
-        }
-
-        .week-section.week-2 .day-card:not(.today):not(.tomorrow) {
-            background: white;
-            border: 2px solid #e8eff3;
-        }
-
-        .week-section.week-3 {
-            background: #ffffff;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
-        }
-
-        .week-section.week-3 .week-title {
-            color: #4a5f6b;
-            border-bottom: 2px solid #e8eff3;
-            text-shadow: none;
-        }
-
-        .week-section.week-3 .day-card:not(.today):not(.tomorrow) {
-            background: white;
-            border: 2px solid #e8eff3;
-        }
-
-        .week-section.week-4 {
-            background: #ffffff;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
-        }
-
-        .week-section.week-4 .week-title {
-            color: #4a5f6b;
-            border-bottom: 2px solid #e8eff3;
-            text-shadow: none;
-        }
-
-        .week-section.week-4 .day-card:not(.today):not(.tomorrow) {
-            background: white;
-            border: 2px solid #e8eff3;
-        }
-
-        /* Current week enhancement */
-        .week-section.current-week {
-            box-shadow: 0 10px 40px rgba(160, 217, 232, 0.4) !important;
-            border: 3px solid #a0d9e8;
-        }
-
-        .week-title {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #eee;
-            color: #2c3e50;
-            text-align: left;
-        }
-
-        .current-badge {
-            display: inline-block;
-            background: #a0d9e8;
-            color: #4a5f6b;
-            padding: 0.4rem 1rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            margin-left: 1rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            border: none;
-            box-shadow: 0 3px 8px rgba(160, 217, 232, 0.5);
+            margin: 0;
         }
 
-        /* Menu grid */
         .menu-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
-        .menu-container.compact {
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        /* Day card */
         .day-card {
-            background: white;
-            border-radius: 20px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 25px;
+            padding: 1.8rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
             position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            min-height: 200px;
-            border: 2px solid #e8eff3;
+            overflow: hidden;
+            border: 2px solid rgba(0, 0, 0, 0.1);
         }
 
-        @media (hover: hover) {
-            .day-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-            }
+        .day-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ff7b00, #e91e63, #ff4081);
+            border-radius: 25px 25px 0 0;
         }
 
-        @media (hover: none) {
-            .day-card:active {
-                transform: scale(0.98);
-            }
+        .day-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
         }
 
-        .week-section.current-week .day-card:not(.today):not(.tomorrow) {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+        .day-card.today {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-color: #ff7b00;
         }
 
-        .week-section .day-card.today {
-            background: #a0d9e8 !important;
-        }
-
-        .week-section .day-card.tomorrow {
-            background: white !important;
+        .day-card.today::before {
+            background: linear-gradient(90deg, #ff7b00, #e91e63, #ffc107);
         }
 
         .day-card h2 {
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #eee;
-            text-transform: capitalize;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .day-date {
-            font-size: 0.85rem;
-            color: #7f8c8d;
-            font-weight: 500;
-            margin-left: 0.5rem;
-        }
-        
-        .day-card.today .day-date {
-            color: #4a5f6b;
-            font-weight: 600;
-        }
-        
-        .day-card.tomorrow .day-date {
-            color: #7f8c8d;
-            font-weight: 500;
-        }
-
-        .day-label {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.6rem;
-            border-radius: 12px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .today-label {
-            background: #586a75;
-            color: white;
-            border: none;
-            box-shadow: 0 2px 6px rgba(88, 106, 117, 0.4);
-        }
-
-        .tomorrow-label {
-            background: #586a75;
-            color: white;
-            border: none;
-            box-shadow: 0 2px 6px rgba(88, 106, 117, 0.4);
-        }
-
-        .meal {
-            margin-bottom: 1rem;
-        }
-
-        .meal h3 {
-            color: #586a75;
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-            font-weight: 600;
-        }
-
-        .meal p {
-            color: #555;
-            font-size: 0.95rem;
-        }
-
-        /* Today's card - Strong emphasis per asilo */
-        .day-card.today {
-            border: 4px solid #a0d9e8;
-            background: #a0d9e8;
-            box-shadow: 0 10px 30px rgba(160, 217, 232, 0.4);
-        }
-
-        .day-card.today h2 {
-            color: #4a5f6b;
-            font-weight: 700;
+            color: #2d3748;
             font-size: 1.4rem;
-        }
-
-        .day-card.tomorrow {
-            border: 2px solid #f0f0f0;
-            background: white;
-            opacity: 1;
-        }
-
-        .day-card.tomorrow h2 {
-            color: #2c3e50;
             font-weight: 600;
-        }
-
-        .day-badge {
-            position: absolute;
-            top: -10px;
-            right: 20px;
-            color: white;
-            padding: 0.35rem 0.85rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
-        }
-
-        .today-badge {
-            background: #586a75;
-            color: white;
-            font-size: 1rem;
-            padding: 0.5rem 1.2rem;
-            animation: pulse 2s ease-in-out infinite;
-            border: none;
-        }
-
-        .tomorrow-badge {
-            background: #586a75;
-            color: white;
-            font-size: 0.85rem;
-            border: none;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 3px 10px rgba(88, 106, 117, 0.4);
-            }
-            50% {
-                box-shadow: 0 5px 20px rgba(88, 106, 117, 0.7);
-                transform: scale(1.05);
-            }
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            font-size: 0.9rem;
-        }
-
-        /* Responsive adjustments */
-        
-        /* Tablets and small desktops */
-        @media (max-width: 1024px) {
-            .menu-container:not(.compact) {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-                gap: 1rem;
-            }
-            
-            .week-section {
-                padding: 1.25rem;
-            }
-        }
-        
-        /* Tablets portrait */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .week-info {
-                font-size: 1rem;
-            }
-            
-            .week-title {
-                font-size: 1.5rem;
-            }
-            
-            .current-badge {
-                display: block;
-                margin: 0.5rem 0 0 0;
-                width: fit-content;
-            }
-            
-            .menu-container:not(.compact) {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            
-            .week-section {
-                margin-bottom: 1.5rem;
-                padding: 1rem;
-            }
-            
-            /* Preferiti più compatti su tablet */
-            .favorite-combination {
-                padding: 1rem;
-            }
-            
-            .favorite-section-title {
-                font-size: 1.05rem;
-            }
-        }
-        
-        /* Mobile devices */
-        @media (max-width: 480px) {
-            .container {
-                padding: 0.5rem;
-            }
-            
-            header {
-                margin-bottom: 1rem;
-            }
-            
-            h1 {
-                font-size: 1.5rem;
-            }
-            
-            .week-info {
-                font-size: 0.9rem;
-            }
-            
-            .controls {
-                position: fixed;
-                right: 0.5rem;
-                top: 0.5rem;
-                flex-direction: column;
-                gap: 0.35rem;
-            }
-            
-            .btn {
-                padding: 0.5rem 0.75rem;
-                font-size: 0.7rem;
-                border-radius: 6px;
-            }
-            
-            .quick-view-header {
-                padding: 0.75rem 1rem;
-                margin-bottom: 0.75rem;
-            }
-            
-            .quick-view-header h2 {
-                font-size: 1.2rem;
-            }
-            
-            .quick-view-header h2::before {
-                font-size: 1rem;
-            }
-            
-            .timeline-container {
-                padding: 0.75rem 0.5rem;
-            }
-            
-            .timeline-dot {
-                width: 35px;
-                height: 35px;
-                font-size: 0.9rem;
-            }
-            
-            .timeline-label {
-                font-size: 0.65rem;
-            }
-            
-            .week-section {
-                margin-bottom: 1.5rem;
-                padding: 0.75rem;
-            }
-            
-            .week-title {
-                font-size: 1.3rem;
-                margin-bottom: 1rem;
-            }
-            
-            .current-badge {
-                font-size: 0.75rem;
-                padding: 0.2rem 0.6rem;
-            }
-            
-            .menu-container {
-                grid-template-columns: 1fr;
-                gap: 0.75rem;
-            }
-            
-            .day-card {
-                padding: 1rem;
-            }
-            
-            .day-card h2 {
-                font-size: 1.2rem;
-            }
-            
-            .meal h3 {
-                font-size: 0.9rem;
-            }
-            
-            .meal p {
-                font-size: 0.85rem;
-            }
-            
-            .day-badge {
-                top: -8px;
-                right: 10px;
-                font-size: 0.7rem;
-                padding: 0.2rem 0.6rem;
-            }
-            
-            footer {
-                margin-top: 1.5rem;
-                font-size: 0.8rem;
-            }
-            
-            /* Preferiti più compatti su mobile */
-            .favorite-combination {
-                padding: 0.75rem;
-                border-radius: 15px;
-            }
-            
-            .favorite-delete-btn {
-                top: 0.5rem;
-                right: 0.5rem;
-                width: 28px;
-                height: 28px;
-                font-size: 1.3rem;
-            }
-            
-            .day-toggle {
-                margin: 0.5rem 0;
-                padding: 0.3rem;
-            }
-            
-            .day-toggle-btn {
-                padding: 0.5rem 1rem;
-                font-size: 0.85rem;
-            }
-            
-            .favorite-day-view {
-                gap: 0.75rem;
-                margin-top: 0.75rem;
-            }
-            
-            .favorite-menu-section,
-            .favorite-activities-section {
-                padding: 0.75rem;
-            }
-            
-            .favorite-section-title {
-                font-size: 1rem;
-                margin-bottom: 0.5rem;
-                padding-bottom: 0.3rem;
-            }
-            
-            .favorite-menu-items .meal {
-                margin-bottom: 0.5rem;
-                padding: 0.5rem;
-            }
-            
-            .favorite-menu-items .meal h4 {
-                font-size: 0.9rem;
-                margin-bottom: 0.2rem;
-            }
-            
-            .favorite-menu-items .meal p {
-                font-size: 0.85rem;
-            }
-            
-            .favorite-activities-list .activity-moment {
-                margin-bottom: 0.5rem;
-                padding: 0.5rem;
-            }
-            
-            .favorite-activities-list .activity-moment-title {
-                font-size: 0.8rem;
-                margin-bottom: 0.2rem;
-            }
-            
-            .favorite-activities-list .activity-moment-content {
-                font-size: 0.8rem;
-            }
-        }
-        
-        /* Extra small devices */
-        @media (max-width: 360px) {
-            .container {
-                padding: 0.5rem 0.25rem;
-            }
-            
-            h1 {
-                font-size: 1.3rem;
-            }
-            
-            .week-section {
-                padding: 0.5rem;
-            }
-            
-            .week-title {
-                font-size: 1.1rem;
-            }
-            
-            .day-card {
-                padding: 0.75rem;
-            }
-            
-            .current-badge {
-                font-size: 0.7rem;
-            }
-        }
-
-        /* Activities styles */
-        .activities-container {
-            margin-bottom: 2rem;
-        }
-
-        .activity-week {
-            background: #ffffff;
-            border-radius: 25px;
-            padding: 2rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
-            margin-bottom: 2rem;
-        }
-
-        .activity-week-title {
-            font-size: 1.5rem;
             margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #e8eff3;
-            color: #4a5f6b;
-            text-align: center;
         }
+
+        .menu-list {
+            margin-top: 0.5rem;
+        }
+
+        .menu-item {
+            margin-bottom: 0.5rem;
+            padding: 0.3rem 0;
+            color: #2d3748;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            border-left: 3px solid;
+            padding-left: 0.8rem;
+        }
+
+        .menu-item:nth-child(1) { border-left-color: #f56565; }
+        .menu-item:nth-child(2) { border-left-color: #ed8936; }
+        .menu-item:nth-child(3) { border-left-color: #ecc94b; }
 
         .activities-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
         }
 
         .activity-day-card {
-            background: white;
-            border-radius: 20px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            border: 2px solid #e8eff3;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        @media (hover: hover) {
-            .activity-day-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-            }
-        }
-
-        .activity-day-card h3 {
-            color: #586a75;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #e8eff3;
-            font-size: 1.2rem;
-        }
-
-        .activity-moment {
-            margin-bottom: 0.75rem;
-            padding: 0.5rem;
-            background: #f8fafb;
-            border-radius: 10px;
-            border-left: 4px solid #a0d9e8;
-        }
-
-        .activity-moment-title {
-            font-weight: 600;
-            color: #555;
-            font-size: 0.85rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .activity-moment-content {
-            color: #333;
-            font-size: 0.9rem;
+            background: linear-gradient(135deg, #ffffff 0%, #fff9f5 100%);
+            border-radius: 25px;
+            padding: 1rem;
+            box-shadow: 0 15px 40px rgba(255, 154, 86, 0.15);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 154, 86, 0.1);
+            border-left: 4px solid #ff9a56;
         }
 
         .activity-day-card.today {
-            background: #a0d9e8;
-            border: 3px solid #a0d9e8;
-            box-shadow: 0 8px 25px rgba(160, 217, 232, 0.4);
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe0cc 100%);
+            border-color: #ff9a56;
         }
 
-        .activity-day-card.tomorrow {
-            border: 2px solid #e8eff3;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        }
-
-        /* Preferences section */
-        .preferences-container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .preferences-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .preferences-header h2 {
-            color: #ffffff;
+        .activity-day-card h3 {
+            color: #2d3748;
+            font-size: 1.2rem;
+            font-weight: 600;
             margin-bottom: 0.5rem;
+            text-align: center;
         }
 
-        .preferences-header p {
-            color: #b8c9d4;
+        .activity-moment {
+            margin-bottom: 0.5rem;
+            padding: 0.4rem;
+        }
+
+        .activity-moment-title {
+            color: #4a5568;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .activity-moment-content {
+            color: #2d3748;
             font-size: 0.95rem;
         }
 
         .add-combination-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ff9a56 0%, #ff8fab 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(255, 154, 86, 0.3);
+            margin: 1rem auto;
             display: block;
-            margin: 0 auto 2rem;
-            padding: 0.8rem 2rem;
-            background: #a0d9e8;
-            color: #4a5f6b;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(160, 217, 232, 0.5);
-            transition: all 0.3s ease;
         }
 
-        @media (hover: hover) {
-            .add-combination-btn:hover {
-                background: #8ecae6;
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(160, 217, 232, 0.6);
-            }
+        .add-combination-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(72, 187, 120, 0.4);
         }
 
-        .combinations-list {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .combination-card {
-            background: #ffffff;
-            border-radius: 25px;
+        .loading {
+            text-align: center;
             padding: 2rem;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            border: 2px solid #e8eff3;
+            color: #718096;
+            font-style: italic;
         }
 
-        .combination-card.highlight {
-            border-color: #a0d9e8;
-            box-shadow: 0 10px 40px rgba(160, 217, 232, 0.4);
-        }
-
-        .combination-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid #eee;
-        }
-
-        .combination-name {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #4a5f6b;
-        }
-
-        .combination-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .action-btn {
-            padding: 0.4rem 0.8rem;
-            border: none;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .action-btn.edit {
-            background: #3498db;
-            color: white;
-        }
-
-        .action-btn.delete {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .action-btn.move {
-            background: #95a5a6;
-            color: white;
-            padding: 0.4rem 0.6rem;
-        }
-
-        @media (hover: hover) {
-            .action-btn:hover {
-                transform: scale(1.05);
-            }
-        }
-
-        .order-controls {
-            display: flex;
-            gap: 0.3rem;
-            align-items: center;
-        }
-
-        .combination-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .combination-section {
-            background: #f8fafb;
-            padding: 1rem;
-            border-radius: 15px;
-            border: 1px solid #e8eff3;
-        }
-
-        .combination-section h4 {
-            color: #586a75;
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
-        }
-
-        .combination-section p {
-            color: #555;
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            color: #ffe0cc;
             font-size: 0.9rem;
-            margin: 0.25rem 0;
         }
 
-        /* Modal */
         .modal {
-            display: none;
             position: fixed;
-            z-index: 2000;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
         }
 
         .modal.active {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
         }
 
         .modal-content {
             background: white;
-            padding: 2rem;
             border-radius: 25px;
+            padding: 2.5rem;
             max-width: 500px;
-            width: 100%;
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.4);
+            width: 90%;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
         }
 
         .modal-header {
-            display: none;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-header h2 {
+            color: #2d3748;
+            font-size: 1.8rem;
+            font-weight: 600;
         }
 
         .form-group {
@@ -1217,442 +361,428 @@
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: #4a5f6b;
+            color: #4a5568;
+            font-size: 1rem;
             font-weight: 600;
-            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
         }
 
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            transition: border-color 0.3s ease;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #a0d9e8;
-            box-shadow: 0 0 0 3px rgba(160, 217, 232, 0.2);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .modal-actions {
             display: flex;
-            gap: 1rem;
             justify-content: center;
+            gap: 1rem;
             margin-top: 2rem;
         }
 
         .modal-btn {
-            padding: 0.75rem 2rem;
+            padding: 1rem 2rem;
             border: none;
-            border-radius: 20px;
+            border-radius: 25px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-        }
-
-        .modal-btn.save {
-            background: #a0d9e8;
-            color: #4a5f6b;
         }
 
         .modal-btn.cancel {
-            background: #95a5a6;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
+            color: #4a5568;
+        }
+
+        .modal-btn.save {
+            background: linear-gradient(135deg, #ff9a56 0%, #ff8fab 100%);
             color: white;
+            box-shadow: 0 5px 20px rgba(255, 154, 86, 0.3);
         }
 
-        @media (hover: hover) {
-            .modal-btn:hover {
-                transform: translateY(-2px);
-            }
+        .modal-btn:hover {
+            transform: translateY(-2px);
         }
 
-        /* Favorites section */
-        .favorites-container {
-            margin-bottom: 2rem;
-        }
-
-        .favorites-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .favorites-header h2 {
-            color: #ffffff;
-            margin-bottom: 0.5rem;
-        }
-
-        .favorites-grid {
+        .combinations-grid {
             display: grid;
-            gap: 2rem;
-        }
-
-        .favorite-combination {
-            background: #ffffff;
-            border: 2px solid #e8eff3;
-            border-radius: 25px;
-            padding: 1.25rem;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-            position: relative;
-        }
-
-        .favorite-delete-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            width: 32px;
-            height: 32px;
-            border: none;
-            background: #e74c3c;
-            color: white;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            line-height: 1;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-        }
-
-        .favorite-delete-btn:hover {
-            background: #c0392b;
-            transform: scale(1.1);
-        }
-
-        .favorite-delete-btn:active {
-            transform: scale(0.95);
-        }
-
-        .favorite-combination-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #e8eff3;
-        }
-
-        .favorite-combination-header h3 {
-            color: #4a5f6b;
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .favorite-combination-header .combination-info {
-            display: flex;
-            justify-content: center;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
-            flex-wrap: wrap;
-            margin-top: 0.5rem;
+            margin-top: 2rem;
         }
 
-        .combination-badge {
-            background: #a0d9e8;
-            color: #4a5f6b;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .day-toggle {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin: 0.75rem 0;
-            padding: 0.4rem;
-            background: #f8fafb;
-            border-radius: 15px;
-        }
-
-        .day-toggle-btn {
-            padding: 0.6rem 1.5rem;
-            border: 2px solid transparent;
-            background: white;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #666;
-            cursor: pointer;
+        .combination-card {
+            background: linear-gradient(135deg, #ffffff 0%, #fff9f5 100%);
+            border-radius: 25px;
+            padding: 1.8rem;
+            box-shadow: 0 15px 40px rgba(255, 154, 86, 0.15);
             transition: all 0.3s ease;
+            border: 2px solid rgba(255, 154, 86, 0.1);
+            position: relative;
+            border-left: 4px solid #ff9a56;
         }
 
-        .day-toggle-btn.active {
-            background: #a0d9e8;
-            color: #4a5f6b;
-            border-color: #a0d9e8;
-            box-shadow: 0 4px 10px rgba(160, 217, 232, 0.4);
+        .combination-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
         }
 
-        @media (hover: hover) {
-            .day-toggle-btn:not(.active):hover {
-                background: #e9ecef;
-                transform: translateY(-2px);
-            }
+        .combination-card h3 {
+            color: #2d3748;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: left;
+            padding-right: 60px;
         }
 
-        .favorite-day-view {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+        .combination-card p {
+            color: #4a5568;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .combination-actions {
+            display: flex;
+            gap: 0.5rem;
             margin-top: 1rem;
         }
 
-        .favorite-menu-section,
-        .favorite-activities-section {
-            background: #f8fafb;
-            padding: 1rem;
-            border-radius: 15px;
-            border: 1px solid #e8eff3;
-            box-shadow: none;
-        }
-
-        .favorite-section-title {
-            color: #586a75;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            padding-bottom: 0.4rem;
-            border-bottom: 2px solid #e8eff3;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .favorite-menu-items .meal {
-            margin-bottom: 0.6rem;
-            padding: 0.6rem;
-            background: white;
-            border-radius: 10px;
-            border-left: 3px solid #a0d9e8;
-        }
-
-        .favorite-menu-items .meal h4 {
-            color: #586a75;
-            font-size: 0.95rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .favorite-menu-items .meal p {
-            color: #333;
+        .combination-actions .modal-btn {
+            padding: 0.5rem 1rem;
             font-size: 0.9rem;
-            line-height: 1.3;
         }
 
-        .favorite-activities-list .activity-moment {
-            margin-bottom: 0.6rem;
-            padding: 0.6rem;
-            background: white;
-            border-radius: 10px;
-            border-left: 3px solid #586a75;
+        .current-info {
+            margin: 1rem 0;
+            padding: 1rem;
         }
 
-        .favorite-activities-list .activity-moment-title {
-            font-weight: 600;
-            color: #586a75;
-            font-size: 0.85rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .favorite-activities-list .activity-moment-content {
-            color: #333;
-            font-size: 0.85rem;
-            line-height: 1.3;
-        }
-
-        .no-data-message {
-            text-align: center;
-            padding: 2rem;
-            color: #999;
-            font-style: italic;
-        }
-
-        @media (max-width: 968px) {
-            .favorite-day-view {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .combination-content,
-            .favorite-split {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Favorites tabs */
-        .favorites-tabs-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .favorites-tabs {
-            display: flex;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            overflow-x: auto;
-            flex-wrap: nowrap;
-        }
-
-        .favorite-tab-btn {
-            padding: 0.8rem 1.5rem;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+        .current-info h4 {
+            color: #2d3748;
             font-size: 1rem;
             font-weight: 600;
-            color: #e0e8ed;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-preview,
+        .activity-preview {
+            margin: 0.5rem 0;
+        }
+
+        .menu-preview strong,
+        .activity-preview strong {
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        .menu-preview small,
+        .activity-preview small {
+            color: #2d3748;
+            font-size: 0.8rem;
+            line-height: 1.3;
+            display: block;
+            margin: 0.2rem 0;
+        }
+
+        .no-data {
+            color: #718096;
+            font-style: italic;
+            font-size: 0.85rem;
+            margin: 0.5rem 0;
+        }
+
+        .mini-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 10;
+        }
+
+        .mini-toggle-btn {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ff7b00 0%, #e91e63 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             white-space: nowrap;
-            flex-shrink: 0;
         }
 
-        .favorite-tab-btn.active {
-            background: #ffffff;
-            color: #4a5f6b;
-            border-color: #ffffff;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        .mini-toggle-btn:active {
+            background: linear-gradient(135deg, #e91e63 0%, #ff4081 100%);
+            transform: scale(0.95);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
         }
 
-        @media (hover: hover) {
-            .favorite-tab-btn:not(.active):hover {
-                background: rgba(255, 255, 255, 0.2);
-                border-color: rgba(255, 255, 255, 0.5);
-                transform: translateY(-2px);
-            }
+        .combination-card.deleting {
+            animation: deletePulse 1.5s ease-in-out;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe0e0 100%) !important;
+            border-color: #f56565 !important;
         }
 
-        .favorites-tab-content {
+        @keyframes deletePulse {
+            0% { transform: scale(1); }
+            25% { transform: scale(0.95); }
+            50% { transform: scale(1.05); }
+            75% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        .mini-toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 36px;
+            height: 20px;
+        }
+
+        .mini-toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .mini-toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #ff9a56 0%, #ff8fab 100%);
+            transition: .4s;
+            border-radius: 34px;
+            box-shadow: 0 1px 4px rgba(255, 154, 86, 0.3);
+        }
+
+        .mini-toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .mini-toggle-slider {
+            background: linear-gradient(135deg, #ff6b95 0%, #ff8fab 100%);
+            box-shadow: 0 1px 4px rgba(255, 107, 149, 0.3);
+        }
+
+        input:checked + .mini-toggle-slider:before {
+            transform: translateX(16px);
+        }
+
+        .delete-icon {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(238, 90, 82, 0.3);
+        }
+
+        .delete-icon:hover {
+            background: linear-gradient(135deg, #ee5a52 0%, #dc4441 100%);
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(238, 90, 82, 0.4);
+        }
+
+        .mobile-day-tab {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ff9a56 0%, #ff8fab 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 154, 86, 0.3);
+        }
+
+        .mobile-day-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .mobile-day-tab.active {
+            background: linear-gradient(135deg, #ff6b95 0%, #ff8fab 100%);
+            box-shadow: 0 8px 30px rgba(255, 107, 149, 0.4);
+        }
+
+        .tomorrow-info {
             display: none;
         }
 
-        .favorites-tab-content.active {
-            display: block;
+        .mobile-day-tab {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ff9a56 0%, #ff8fab 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 154, 86, 0.3);
+        }
+
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .nav-tabs {
+                gap: 0.5rem;
+            }
+
+            .nav-tab {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .menu-container {
+                grid-template-columns: 1fr;
+            }
+
+            .activities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            .combinations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mobile-day-toggle {
+                display: flex;
+            }
+
+
+            .combination-card {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header></header>
+        <header>
+            <h1>Meal & Play</h1>
+        </header>
 
-        <!-- Navigation Tabs -->
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('favorites')">⭐ Preferiti</button>
-            <button class="nav-tab" onclick="switchTab('menu')">📋 Menu</button>
-            <button class="nav-tab" onclick="switchTab('activities')">🎨 Attività</button>
-        </div>
-        
-        <!-- MENU SECTION -->
-        <div id="menu-section" class="hidden">
-            <!-- Menu Type Selector -->
-            <div class="selector-container">
-                <div class="selector-buttons">
-                    <button class="selector-btn active" onclick="selectMenuType('nido')">Piccoli</button>
-                    <button class="selector-btn" onclick="selectMenuType('infanzia')">Grandi</button>
-                </div>
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="favorites">Preferiti</button>
+            <button class="nav-tab" data-tab="menu">Menu</button>
+            <button class="nav-tab" data-tab="activities">Attività</button>
+        </nav>
+
+        <section id="favorites-section" class="section">
+            <div id="favorites-content">
+                <div class="loading">Nessun preferito salvato. Clicca su "Aggiungi" per iniziare!</div>
             </div>
-
-            <button class="btn btn-secondary" id="btn-all-weeks" onclick="toggleAllWeeks()" style="display: block; margin: 0 auto 1.5rem;">Tutte le Settimane</button>
             
+            <div id="create-favorite-container" style="text-align: center; margin-top: 2rem; display: none;">
+                <button class="add-combination-btn" onclick="openCombinationModal()">
+                    Aggiungi
+                </button>
+            </div>
+        </section>
+
+        <section id="menu-section" class="section hidden">
+            <div class="selectors">
+                <button class="selector-btn active" data-menu-type="nido">Piccoli</button>
+                <button class="selector-btn" data-menu-type="infanzia">Grandi</button>
+            </div>
             <div id="quick-view">
-                <!-- Quick view (all days of current week) will be generated here -->
+                <div class="loading">Caricamento menu in corso...</div>
             </div>
-            
-            <div id="all-weeks-container" class="hidden">
-                <div class="timeline-container">
-                    <div class="timeline" id="timeline">
-                        <div class="timeline-item active" data-week="1" onclick="scrollToWeek(1)">
-                            <div class="timeline-dot">1</div>
-                            <div class="timeline-label">Sett. 1</div>
-                        </div>
-                        <div class="timeline-item" data-week="2" onclick="scrollToWeek(2)">
-                            <div class="timeline-dot">2</div>
-                            <div class="timeline-label">Sett. 2</div>
-                        </div>
-                        <div class="timeline-item" data-week="3" onclick="scrollToWeek(3)">
-                            <div class="timeline-dot">3</div>
-                            <div class="timeline-label">Sett. 3</div>
-                        </div>
-                        <div class="timeline-item" data-week="4" onclick="scrollToWeek(4)">
-                            <div class="timeline-dot">4</div>
-                            <div class="timeline-label">Sett. 4</div>
-                        </div>
-                    </div>
-                </div>
-                <div id="weeks-content">
-                    <!-- All weeks will be generated by JavaScript -->
-                </div>
-            </div>
-        </div>
+        </section>
 
-        <!-- ACTIVITIES SECTION -->
-        <div id="activities-section" class="hidden">
-            <!-- Activities Group Selector -->
-            <div class="selector-container">
-                <span class="selector-label">Gruppo:</span>
-                <div class="selector-buttons">
-                    <button class="selector-btn active" onclick="selectActivityGroup('nido')">Nido</button>
-                    <button class="selector-btn" onclick="selectActivityGroup('primavera')">Primavera</button>
-                    <button class="selector-btn" onclick="selectActivityGroup('infanzia1')">Infanzia 1</button>
-                    <button class="selector-btn" onclick="selectActivityGroup('infanzia2')">Infanzia 2</button>
-                </div>
+        <section id="activities-section" class="section hidden">
+            <div class="selectors">
+                <button class="selector-btn active" data-activity-group="nido">Nido</button>
+                <button class="selector-btn" data-activity-group="primavera">Primavera</button>
+                <button class="selector-btn" data-activity-group="infanzia1">Infanzia 1</button>
+                <button class="selector-btn" data-activity-group="infanzia2">Infanzia 2</button>
             </div>
-
-            <div id="activities-content" class="activities-container">
-                <!-- Activities will be generated by JavaScript -->
+            <div id="activities-content">
+                <div class="loading">Caricamento attività in corso...</div>
             </div>
-        </div>
+        </section>
 
-        <!-- FAVORITES SECTION -->
-        <div id="favorites-section">
-            <div class="favorites-container">
-                <button class="add-combination-btn" id="btn-install" style="display: none;">📲 Installa App</button>
-                
-                <div id="favorites-content" class="favorites-grid">
-                    <!-- Favorites will be generated by JavaScript -->
-                </div>
-            </div>
-        </div>
-
-        
         <footer>
-            <p>Made with 💛</p>
+            <p>Made with love for little ones</p>
+            <p id="config-date"></p>
         </footer>
     </div>
 
-    <!-- MODAL FOR ADDING/EDITING COMBINATIONS -->
+    <!-- Combination Modal -->
     <div id="combination-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modal-title">Bimbo</h3>
+                <h2 id="modal-title">Crea il tuo Preferito</h2>
             </div>
-            
-            <form id="combination-form" style="margin-top: 0;">
+            <form id="combination-form">
                 <div class="form-group">
                     <label for="combination-name">Nome</label>
-                    <input type="text" id="combination-name" placeholder="Es: Mio Figlio - Nido" required>
+                    <input type="text" id="combination-name" placeholder="Dai un nome alla tua combinazione..." required>
                 </div>
-
                 <div class="form-group">
-                    <label for="combination-menu">Menu</label>
+                    <label for="combination-menu">Tipo Menu</label>
                     <select id="combination-menu" required>
-                        <option value="nido">Nido</option>
-                        <option value="infanzia">Infanzia</option>
+                        <option value="nido">Piccoli</option>
+                        <option value="infanzia">Grandi</option>
                     </select>
                 </div>
-
                 <div class="form-group">
-                    <label for="combination-activity">Attività</label>
+                    <label for="combination-activity">Gruppo Attività</label>
                     <select id="combination-activity" required>
                         <option value="nido">Nido</option>
                         <option value="primavera">Primavera</option>
@@ -1660,7 +790,6 @@
                         <option value="infanzia2">Infanzia 2</option>
                     </select>
                 </div>
-
                 <div class="modal-actions">
                     <button type="button" class="modal-btn cancel" onclick="closeCombinationModal()">Annulla</button>
                     <button type="submit" class="modal-btn save">Salva</button>
@@ -1669,885 +798,78 @@
         </div>
     </div>
 
-    <!-- Menu data now loaded from external file: menu-data.txt -->
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Conferma Eliminazione</h2>
+            </div>
+            <p style="text-align: center; margin-bottom: 2rem; color: #4a5568;">Sei sicuro di voler eliminare questo preferito?</p>
+            <div class="modal-actions">
+                <button type="button" class="modal-btn cancel" onclick="closeDeleteModal()">Annulla</button>
+                <button type="button" class="modal-btn save" onclick="confirmDelete()">Elimina</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // *** CONFIGURAZIONE DATA DI INIZIO ***
-        // Caricata da week-config.txt o default
-        let WEEK_1_MONDAY = '2025-10-27'; // Default fallback
-        
-        // Carica la configurazione dal file week-config.txt
-        async function loadWeekConfig() {
-            try {
-                const response = await fetch('week-config.txt');
-                if (response.ok) {
-                    const text = await response.text();
-                    const date = text.trim();
-                    // Valida il formato YYYY-MM-DD
-                    if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-                        WEEK_1_MONDAY = date;
-                        console.log('Configurazione settimana caricata:', WEEK_1_MONDAY);
-                    }
-                }
-            } catch (error) {
-                console.log('Usa configurazione default:', WEEK_1_MONDAY);
-            }
-        }
-        
-        // Current selections
+        // Global variables
+        let currentTab = 'favorites';
         let currentMenuType = 'nido';
         let currentActivityGroup = 'nido';
-        let currentTab = 'favorites';
-        
-        // Menu data will be loaded from external file
-        let MENU_NIDO = {
-            0: {},
-            1: {},
-            2: {},
-            3: {}
-        };
-
-        let MENU_INFANZIA = {
-            0: {},
-            1: {},
-            2: {},
-            3: {}
-        };
-
-        // Activities data
-        let ACTIVITIES = {
-            nido: {},
-            primavera: {},
-            infanzia1: {},
-            infanzia2: {}
-        };
-
-        // Day mapping from number to Italian name
-        const DAY_NAMES = {
-            1: 'Lunedì',
-            2: 'Martedì',
-            3: 'Mercoledì',
-            4: 'Giovedì',
-            5: 'Venerdì',
-            6: 'Sabato'
-        };
-
-        // Activity moments names
-        const ACTIVITY_MOMENTS = [
-            '🌅 Attività del Mattino',
-            '🌆 Attività del Pomeriggio'
-        ];
-
-        // Combinations management
+        let MENU_NIDO = {};
+        let MENU_INFANZIA = {};
+        let ACTIVITIES = {};
+        let WEEK_1_MONDAY = '';
         let combinations = [];
         let editingCombinationId = null;
+        let deleteTargetId = null;
 
-        // Load combinations from localStorage
-        function loadCombinations() {
-            const stored = localStorage.getItem('lunchBuddiesCombinations');
-            if (stored) {
-                try {
-                    combinations = JSON.parse(stored);
-                } catch (e) {
-                    console.error('Error loading combinations:', e);
-                    combinations = [];
-                }
-            }
-        }
-
-        // Save combinations to localStorage
-        function saveCombinations() {
-            localStorage.setItem('lunchBuddiesCombinations', JSON.stringify(combinations));
-        }
-
-        // Generate unique ID
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
-        }
-
-        // Load all data files
-        async function loadAllDataFiles() {
-            await loadMenuNido();
-            await loadMenuInfanzia();
-            await loadActivities();
-        }
-
-        // Load menu Nido from external text file
-        async function loadMenuNido() {
-            try {
-                const timestamp = new Date().getTime();
-                const response = await fetch(`menu-nido.txt?t=${timestamp}`, {
-                    cache: 'no-store',
-                    headers: {
-                        'Cache-Control': 'no-cache, no-store, must-revalidate',
-                        'Pragma': 'no-cache',
-                        'Expires': '0'
-                    }
-                });
-                if (!response.ok) {
-                    throw new Error('Impossibile caricare il file menu-nido.txt');
-                }
-                const text = await response.text();
-                parseMenuFile(text, MENU_NIDO);
-                console.log('Menu Nido caricato con successo');
-            } catch (error) {
-                console.error('Errore nel caricamento del menu Nido:', error);
-            }
-        }
-
-        // Load menu Infanzia from external text file
-        async function loadMenuInfanzia() {
-            try {
-                const timestamp = new Date().getTime();
-                const response = await fetch(`menu-infanzia.txt?t=${timestamp}`, {
-                    cache: 'no-store',
-                    headers: {
-                        'Cache-Control': 'no-cache, no-store, must-revalidate',
-                        'Pragma': 'no-cache',
-                        'Expires': '0'
-                    }
-                });
-                if (!response.ok) {
-                    throw new Error('Impossibile caricare il file menu-infanzia.txt');
-                }
-                const text = await response.text();
-                parseMenuFileInfanzia(text, MENU_INFANZIA);
-                console.log('Menu Infanzia caricato con successo');
-            } catch (error) {
-                console.error('Errore nel caricamento del menu Infanzia:', error);
-            }
-        }
-
-        // Load activities from external text file
-        async function loadActivities() {
-            try {
-                const timestamp = new Date().getTime();
-                const response = await fetch(`activities.txt?t=${timestamp}`, {
-                    cache: 'no-store',
-                    headers: {
-                        'Cache-Control': 'no-cache, no-store, must-revalidate',
-                        'Pragma': 'no-cache',
-                        'Expires': '0'
-                    }
-                });
-                if (!response.ok) {
-                    throw new Error('Impossibile caricare il file activities.txt');
-                }
-                const text = await response.text();
-                parseActivitiesFile(text);
-                console.log('Attività caricate con successo');
-            } catch (error) {
-                console.error('Errore nel caricamento delle attività:', error);
-            }
-        }
-
-        // Parse menu file for Nido (formato: settimana|giorno|primo|secondo|frutta)
-        function parseMenuFile(text, menuObj) {
-            const lines = text.split('\n');
-            
-            for (const line of lines) {
-                // Skip comments and empty lines
-                if (line.trim().startsWith('#') || line.trim() === '') {
-                    continue;
-                }
-                
-                // Parse line format: settimana|giorno|primo|secondo|frutta
-                const parts = line.split('|').map(p => p.trim());
-                
-                if (parts.length === 5) {
-                    const weekNum = parseInt(parts[0]) - 1; // Convert to 0-based index
-                    const dayNum = parseInt(parts[1]);
-                    const primo = parts[2];
-                    const secondo = parts[3];
-                    const frutta = parts[4];
-                    
-                    const dayName = DAY_NAMES[dayNum];
-                    
-                    if (dayName && weekNum >= 0 && weekNum <= 3) {
-                        menuObj[weekNum][dayName] = { primo, secondo, frutta };
-                    }
-                }
-            }
-        }
-
-        // Parse menu file for Infanzia (formato: settimana|giorno|primo|secondo|frutta o settimana|giorno|primo|secondo|contorno|frutta)
-        function parseMenuFileInfanzia(text, menuObj) {
-            const lines = text.split('\n');
-            
-            for (const line of lines) {
-                // Skip comments and empty lines
-                if (line.trim().startsWith('#') || line.trim() === '') {
-                    continue;
-                }
-                
-                // Parse line format: can be 5 or 6 parts
-                const parts = line.split('|').map(p => p.trim());
-                
-                // Support both formats: with and without contorno
-                if (parts.length === 5) {
-                    // Format: settimana|giorno|primo|secondo|frutta
-                    const weekNum = parseInt(parts[0]) - 1;
-                    const dayNum = parseInt(parts[1]);
-                    const primo = parts[2];
-                    const secondo = parts[3];
-                    const frutta = parts[4];
-                    
-                    const dayName = DAY_NAMES[dayNum];
-                    
-                    if (dayName && weekNum >= 0 && weekNum <= 3) {
-                        menuObj[weekNum][dayName] = { primo, secondo, frutta };
-                    }
-                } else if (parts.length === 6) {
-                    // Format: settimana|giorno|primo|secondo|contorno|frutta
-                    const weekNum = parseInt(parts[0]) - 1;
-                    const dayNum = parseInt(parts[1]);
-                    const primo = parts[2];
-                    const secondo = parts[3];
-                    const contorno = parts[4];
-                    const frutta = parts[5];
-                    
-                    const dayName = DAY_NAMES[dayNum];
-                    
-                    if (dayName && weekNum >= 0 && weekNum <= 3) {
-                        menuObj[weekNum][dayName] = { primo, secondo, contorno, frutta };
-                    }
-                }
-            }
-        }
-
-        // Parse activities file
-        function parseActivitiesFile(text) {
-            const lines = text.split('\n');
-            
-            for (const line of lines) {
-                // Skip comments and empty lines
-                if (line.trim().startsWith('#') || line.trim() === '') {
-                    continue;
-                }
-                
-                // Parse line format: gruppo|giorno|attivita_mattino|attivita_pomeriggio
-                const parts = line.split('|').map(p => p.trim());
-                
-                if (parts.length === 4) {
-                    const group = parts[0];
-                    const dayNum = parseInt(parts[1]);
-                    const moments = parts.slice(2);
-                    
-                    const dayName = DAY_NAMES[dayNum];
-                    
-                    if (dayName && ACTIVITIES[group]) {
-                        ACTIVITIES[group][dayName] = moments;
-                    }
-                }
-            }
-        }
-
-        // Get current menu based on selection
-        function getCurrentMenu() {
-            return currentMenuType === 'nido' ? MENU_NIDO : MENU_INFANZIA;
-        }
-
-        function getWeekNumber(date = new Date()) {
-            // Calcola il numero di settimana basato sulla data di inizio configurata
-            const startDate = new Date(WEEK_1_MONDAY);
-            const currentDate = new Date(date);
-            
-            // Calcola la differenza in giorni
-            const diffTime = currentDate - startDate;
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            
-            // Calcola il numero di settimana (0-3 in ciclo di 4 settimane)
-            const weeksSinceStart = Math.floor(diffDays / 7);
-            let weekNum = weeksSinceStart % 4;
-            
-            // Gestisci il caso di date prima dell'inizio (numeri negativi)
-            if (weekNum < 0) {
-                weekNum = (weekNum + 4) % 4;
-            }
-            
-            return weekNum;
-        }
-
-        function getCurrentDay(date = new Date()) {
+        // Utility functions
+        function getCurrentDay(date) {
             const days = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
             return days[date.getDay()];
         }
 
-        function getYesterdayDay() {
-            const days = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
-            const yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            return days[yesterday.getDay()];
-        }
-
-        function getTomorrowDay(date = new Date()) {
-            const days = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
-            const tomorrow = new Date(date);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            return days[tomorrow.getDay()];
-        }
-        
-        // Calcola la data effettiva per un giorno specifico di una settimana
-        function getDateForWeekDay(weekNum, dayName) {
+        function getWeekNumber(date) {
             const startDate = new Date(WEEK_1_MONDAY);
-            const dayIndex = getDayIndex(dayName);
-            
-            // Calcola quanti giorni aggiungere alla data di inizio
-            const daysToAdd = (weekNum * 7) + dayIndex;
-            
-            const resultDate = new Date(startDate);
-            resultDate.setDate(startDate.getDate() + daysToAdd);
-            
-            return resultDate;
-        }
-        
-        // Formatta la data in formato italiano
-        function formatDate(date) {
-            const day = date.getDate();
-            const month = date.getMonth() + 1;
-            return `${day}/${month}`;
+            const diffTime = date.getTime() - startDate.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const weekNum = Math.floor(diffDays / 7) + 1;
+            return Math.max(1, Math.min(4, weekNum));
         }
 
-        // Funzione per aggiungere emoji ai piatti
-        function addEmojiToFood(text) {
-            const emojiMap = {
-                // Carne
-                'pollo': '🐔',
-                'tacchino': '🦃',
-                'manzo': '🐄',
-                'bistecca': '🥩',
-                'vitello': '🥩',
-                'maiale': '🐷',
-                'salsiccia': '🌭',
-                'hamburger': '🍔',
-                'cotoletta': '🍖',
-                'spezzatino': '🍖',
-                'brasato': '🍖',
-                'polpette': '🍖',
-                
-                // Pesce
-                'pesce': '🐟',
-                'salmone': '🐟',
-                'tonno': '🐟',
-                'merluzzo': '🐟',
-                'orata': '🐟',
-                'frutti di mare': '🦐',
-                
-                // Pasta e primi
-                'pasta': '🍝',
-                'spaghetti': '🍝',
-                'penne': '🍝',
-                'gnocchi': '🥟',
-                'risotto': '🍚',
-                'minestrone': '🥣',
-                'minestra': '🥣',
-                'zuppa': '🥣',
-                
-                // Verdure
-                'funghi': '🍄',
-                'pomodoro': '🍅',
-                'zucca': '🎃',
-                'legumi': '🫘',
-                'ceci': '🫘',
-                'verdure': '🥬',
-                'melanzane': '🍆',
-                'patate': '🥔',
-                
-                // Frutta
-                'mela': '🍎',
-                'pera': '🍐',
-                'banana': '🍌',
-                'arancia': '🍊',
-                'kiwi': '🥝',
-                'fragole': '🍓',
-                'mandarino': '🍊',
-                
-                // Altro
-                'frittata': '🍳',
-                'pesto': '🌿',
-                'ragù': '🍖',
-                'sugo': '🍅',
-                'curry': '🍛'
-            };
-            
-            let result = text;
-            const lowerText = text.toLowerCase();
-            
-            // Cerca la parola chiave più lunga che corrisponde (es. "frutti di mare" prima di "mare")
-            const sortedKeys = Object.keys(emojiMap).sort((a, b) => b.length - a.length);
-            
-            for (const key of sortedKeys) {
-                if (lowerText.includes(key)) {
-                    result = emojiMap[key] + ' ' + result;
-                    break; // Aggiungi solo un'emoji per piatto
-                }
-            }
-            
-            return result;
-        }
-
-        function createDayCard(day, meals, dayType = '', weekNum = null) {
-            const card = document.createElement('div');
-            let cardClass = 'day-card';
-            let labelHTML = '';
-            let dateHTML = '';
-            
-            // Aggiungi la data se viene fornito il numero di settimana
-            if (weekNum !== null) {
-                const date = getDateForWeekDay(weekNum, day);
-                dateHTML = `<span class="day-date">${formatDate(date)}</span>`;
-            }
-            
-            if (dayType === 'today') {
-                cardClass += ' today';
-                labelHTML = '<span class="day-label today-label">Oggi</span>';
-            } else if (dayType === 'tomorrow') {
-                cardClass += ' tomorrow';
-                labelHTML = '<span class="day-label tomorrow-label">Domani</span>';
-            }
-            
-            card.className = cardClass;
-            
-            // Costruisci il contenuto in base al tipo di menu
-            let mealsHTML = `
-                <div class="meal">
-                    <h3>Primo</h3>
-                    <p>${meals.primo}</p>
-                </div>
-                <div class="meal">
-                    <h3>Secondo</h3>
-                    <p>${meals.secondo}</p>
-                </div>`;
-            
-            // Aggiungi contorno solo per menu infanzia
-            if (meals.contorno) {
-                mealsHTML += `
-                <div class="meal">
-                    <h3>Contorno</h3>
-                    <p>${meals.contorno}</p>
-                </div>`;
-            }
-            
-            mealsHTML += `
-                <div class="meal">
-                    <h3>Frutta</h3>
-                    <p>${meals.frutta}</p>
-                </div>`;
-            
-            card.innerHTML = `
-                <h2><span>${day}</span>${dateHTML}${labelHTML}</h2>
-                ${mealsHTML}
-            `;
-            
-            return card;
-        }
-
-        function getDayIndex(dayName) {
-            const dayOrder = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
-            return dayOrder.indexOf(dayName);
-        }
-
-        // Verifica se il giorno corrente è domenica (il sabato ha attività)
-        function isWeekend(date = new Date()) {
-            const day = getCurrentDay(date);
-            return day === 'Domenica';
-        }
-
-        function displayQuickView() {
-            const today = new Date();
-            const currentDay = getCurrentDay(today);
-            const isWeekendDay = isWeekend(today);
-            
-            // Se è domenica, mostra il prossimo lunedì
-            let displayWeek = getWeekNumber(today);
-            let displayStartDay = currentDay;
-            
-            if (isWeekendDay) {
-                // Trova il prossimo lunedì
-                const nextMonday = new Date(today);
-                const daysUntilMonday = 1; // Domenica -> Lunedì
-                nextMonday.setDate(today.getDate() + daysUntilMonday);
-                
-                displayWeek = getWeekNumber(nextMonday);
-                displayStartDay = 'Lunedì';
-            }
-            
-            const menu = getCurrentMenu()[displayWeek];
-            const currentDayIndex = getDayIndex(displayStartDay);
-            const tomorrowDay = getTomorrowDay(today);
-            
-            const quickView = document.getElementById('quick-view');
-            quickView.innerHTML = '';
-            
-            // Calculate week date range
-            const weekStartDate = getDateForWeekDay(displayWeek, 'Lunedì');
-            const weekEndDate = getDateForWeekDay(displayWeek, 'Venerdì');
-            const dateRangeText = `${formatDate(weekStartDate)} - ${formatDate(weekEndDate)}`;
-            
-            // Add week header
-            const weekHeader = document.createElement('div');
-            weekHeader.className = `quick-view-header week-${displayWeek + 1}`;
-            const weekTitle = isWeekendDay
-                ? `Prossima Settimana (Settimana ${displayWeek + 1})`
-                : `Settimana ${displayWeek + 1}`;
-            weekHeader.innerHTML = `<h2>${weekTitle} <small style="font-size:0.8em; font-weight:400;">(${dateRangeText})</small></h2>`;
-            quickView.appendChild(weekHeader);
-            
-            const menuContainer = document.createElement('div');
-            menuContainer.className = 'menu-container compact';
-            
-            // Build list of days to show (only from today onwards)
-            const daysToShow = [];
-            
-            for (const [day, meals] of Object.entries(menu)) {
-                const dayIndex = getDayIndex(day);
-                
-                // Only show days from today onwards
-                if (dayIndex >= currentDayIndex) {
-                    let dayType = '';
-                    let order = dayIndex;
-                    
-                    // Non evidenziare oggi e domani se è weekend
-                    if (!isWeekendDay) {
-                        if (day === displayStartDay) {
-                            dayType = 'today';
-                            order = 0;
-                        } else if (day === tomorrowDay) {
-                            dayType = 'tomorrow';
-                            order = 1;
-                        }
-                    }
-                    
-                    daysToShow.push({ day, meals, dayType, order });
-                }
-            }
-            
-            // Sort to ensure today comes first, then tomorrow, then remaining days in order
-            daysToShow.sort((a, b) => a.order - b.order);
-            
-            // Add all cards
-            daysToShow.forEach(item => {
-                menuContainer.appendChild(createDayCard(item.day, item.meals, item.dayType, displayWeek));
-            });
-            
-            quickView.appendChild(menuContainer);
-        }
-
-
-        function displayAllWeeks() {
-            const today = new Date();
-            const currentWeek = getWeekNumber();
-            const currentDay = getCurrentDay();
-            const tomorrowDay = getTomorrowDay();
-            const isWeekendDay = isWeekend(today);
-            
-            // Se è weekend, la settimana "corrente" da visualizzare è la prossima
-            let displayCurrentWeek = currentWeek;
-            if (isWeekendDay) {
-                const nextMonday = new Date(today);
-                const daysUntilMonday = currentDay === 'Sabato' ? 2 : 1;
-                nextMonday.setDate(today.getDate() + daysUntilMonday);
-                displayCurrentWeek = getWeekNumber(nextMonday);
-            }
-            
-            const weeksContent = document.getElementById('weeks-content');
-            weeksContent.innerHTML = '';
-            
-            // Mark current week in timeline
-            markCurrentWeekInTimeline(displayCurrentWeek + 1);
-            
-            // Show weeks in order 1, 2, 3, 4 (not based on current week)
-            for (let weekNum = 0; weekNum < 4; weekNum++) {
-                const isCurrentWeek = weekNum === displayCurrentWeek;
-                const menu = getCurrentMenu()[weekNum];
-                
-                const weekSection = document.createElement('div');
-                // Add both week color class and current-week class if applicable
-                const weekColorClass = `week-${weekNum + 1}`;
-                weekSection.className = `week-section ${weekColorClass}${isCurrentWeek ? ' current-week' : ''}`;
-                weekSection.id = `week-${weekNum + 1}`; // Add ID for scrolling
-                weekSection.setAttribute('data-week', weekNum + 1);
-                
-                // Calculate week date range
-                const weekStartDate = getDateForWeekDay(weekNum, 'Lunedì');
-                const weekEndDate = getDateForWeekDay(weekNum, 'Venerdì');
-                const dateRangeText = `${formatDate(weekStartDate)} - ${formatDate(weekEndDate)}`;
-                
-                const weekTitle = document.createElement('h2');
-                weekTitle.className = 'week-title';
-                weekTitle.innerHTML = `Settimana ${weekNum + 1} <small style="font-size:0.75em; font-weight:400; color:#666;">(${dateRangeText})</small>${isCurrentWeek ? '<span class="current-badge">Settimana Corrente</span>' : ''}`;
-                weekSection.appendChild(weekTitle);
-                
-                const menuContainer = document.createElement('div');
-                menuContainer.className = 'menu-container';
-                
-                // Mostra i giorni nell'ordine corretto (Lunedì-Venerdì)
-                const dayOrder = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'];
-                for (const day of dayOrder) {
-                    const meals = menu[day];
-                    if (meals) {
-                        let dayType = '';
-                        // Non evidenziare oggi e domani se è weekend
-                        if (isCurrentWeek && !isWeekendDay) {
-                            if (day === currentDay) dayType = 'today';
-                            else if (day === tomorrowDay) dayType = 'tomorrow';
-                        }
-                        
-                        menuContainer.appendChild(createDayCard(day, meals, dayType, weekNum));
-                    }
-                }
-                
-                weekSection.appendChild(menuContainer);
-                weeksContent.appendChild(weekSection);
-            }
-            
-            // Setup intersection observer for timeline
-            setupWeekObserver();
-            
-            // Scroll to current week after a short delay to ensure rendering is complete
-            setTimeout(() => {
-                scrollToWeek(displayCurrentWeek + 1, false);
-            }, 100);
-        }
-
-        // Mark current week in timeline (permanent indicator)
-        function markCurrentWeekInTimeline(currentWeekNum) {
-            document.querySelectorAll('.timeline-item').forEach(item => {
-                const weekNum = parseInt(item.getAttribute('data-week'));
-                if (weekNum === currentWeekNum) {
-                    item.classList.add('current');
-                } else {
-                    item.classList.remove('current');
-                }
-            });
-        }
-
-
-        function toggleAllWeeks() {
-            const quickView = document.getElementById('quick-view');
-            const allWeeksContainer = document.getElementById('all-weeks-container');
-            const btnAllWeeks = document.getElementById('btn-all-weeks');
-            
-            if (allWeeksContainer.classList.contains('hidden')) {
-                // Show all weeks
-                quickView.classList.add('hidden');
-                allWeeksContainer.classList.remove('hidden');
-                
-                btnAllWeeks.textContent = 'Nascondi';
-                btnAllWeeks.classList.remove('btn-secondary');
-                btnAllWeeks.classList.add('btn-primary');
-                
-                displayAllWeeks();
-            } else {
-                // Hide all weeks, show quick view
-                quickView.classList.remove('hidden');
-                allWeeksContainer.classList.add('hidden');
-                
-                btnAllWeeks.textContent = 'Tutte le Settimane';
-                btnAllWeeks.classList.remove('btn-primary');
-                btnAllWeeks.classList.add('btn-secondary');
+        // Load data functions
+        async function loadWeekConfig() {
+            try {
+                const timestamp = Date.now();
+                const response = await fetch(`week-config.txt?t=${timestamp}`);
+                const text = await response.text();
+                WEEK_1_MONDAY = text.trim();
+                console.log('Week config loaded:', WEEK_1_MONDAY);
+            } catch (error) {
+                console.error('Error loading week config:', error);
+                WEEK_1_MONDAY = '2025-09-30'; // Default
             }
         }
 
-        // Setup Intersection Observer to track which week is visible
-        function setupWeekObserver() {
-            const options = {
-                root: null,
-                rootMargin: '-20% 0px -60% 0px',
-                threshold: 0
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const weekNum = entry.target.getAttribute('data-week');
-                        updateTimeline(parseInt(weekNum));
-                    }
-                });
-            }, options);
-
-            // Observe all week sections
-            document.querySelectorAll('.week-section').forEach(section => {
-                observer.observe(section);
-            });
-        }
-
-        // Update timeline to highlight active week
-        function updateTimeline(weekNum) {
-            document.querySelectorAll('.timeline-item').forEach(item => {
-                if (parseInt(item.getAttribute('data-week')) === weekNum) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
-            });
-        }
-
-        // Scroll to specific week
-        function scrollToWeek(weekNum, smooth = true) {
-            const weekElement = document.getElementById(`week-${weekNum}`);
-            if (weekElement) {
-                const offset = 80; // Offset for sticky timeline
-                const elementPosition = weekElement.getBoundingClientRect().top + window.pageYOffset;
-                const offsetPosition = elementPosition - offset;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: smooth ? 'smooth' : 'auto'
-                });
-
-                updateTimeline(weekNum);
+        function loadCombinations() {
+            const saved = localStorage.getItem('combinations');
+            if (saved) {
+                combinations = JSON.parse(saved);
             }
+            console.log('Loaded combinations:', combinations);
         }
 
-        // Switch between tabs (Favorites / Menu / Activities / Preferences)
-        function switchTab(tab) {
-            currentTab = tab;
-            
-            // Update tab buttons
-            document.querySelectorAll('.nav-tab').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Get all sections
-            const favoritesSection = document.getElementById('favorites-section');
-            const menuSection = document.getElementById('menu-section');
-            const activitiesSection = document.getElementById('activities-section');
-            
-            // Hide all sections
-            favoritesSection.classList.add('hidden');
-            menuSection.classList.add('hidden');
-            activitiesSection.classList.add('hidden');
-            
-            // Show selected section
-            if (tab === 'favorites') {
-                favoritesSection.classList.remove('hidden');
-                displayFavorites();
-            } else if (tab === 'menu') {
-                menuSection.classList.remove('hidden');
-            } else if (tab === 'activities') {
-                activitiesSection.classList.remove('hidden');
-                displayActivities();
-            }
+        function saveCombinations() {
+            localStorage.setItem('combinations', JSON.stringify(combinations));
+            console.log('Saved combinations:', combinations);
         }
 
-        // Select menu type (Nido / Infanzia)
-        function selectMenuType(type) {
-            currentMenuType = type;
-            
-            // Update selector buttons
-            document.querySelectorAll('#menu-section .selector-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Refresh menu display
-            const allWeeksContainer = document.getElementById('all-weeks-container');
-            if (allWeeksContainer.classList.contains('hidden')) {
-                displayQuickView();
-            } else {
-                displayAllWeeks();
-            }
-        }
-
-        // Select activity group
-        function selectActivityGroup(group) {
-            currentActivityGroup = group;
-            
-            // Update selector buttons
-            document.querySelectorAll('#activities-section .selector-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Refresh activities display
-            displayActivities();
-        }
-
-        // Display activities for selected group
-        function displayActivities() {
-            const today = new Date();
-            const currentDay = getCurrentDay(today);
-            const tomorrowDay = getTomorrowDay(today);
-            
-            const activitiesContent = document.getElementById('activities-content');
-            activitiesContent.innerHTML = '';
-            
-            const activities = ACTIVITIES[currentActivityGroup];
-            
-            if (!activities || Object.keys(activities).length === 0) {
-                activitiesContent.innerHTML = '<p style="text-align: center; color: #999;">Nessuna attività disponibile per questo gruppo.</p>';
-                return;
-            }
-            
-            const activityWeek = document.createElement('div');
-            activityWeek.className = 'activity-week';
-            
-            // Group label mapping
-            const groupLabels = {
-                'nido': '👶 Nido',
-                'primavera': '🌸 Primavera',
-                'infanzia1': '🎓 Infanzia 1',
-                'infanzia2': '🎓 Infanzia 2'
-            };
-            
-            /*const weekTitle = document.createElement('h2');
-            weekTitle.className = 'activity-week-title';
-            weekTitle.textContent = `Attività - ${groupLabels[currentActivityGroup]}`;
-            activityWeek.appendChild(weekTitle);*/
-            
-            const activitiesGrid = document.createElement('div');
-            activitiesGrid.className = 'activities-grid';
-            
-            // Show days in order (Monday to Saturday)
-            const dayOrder = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
-            for (const day of dayOrder) {
-                const moments = activities[day];
-                if (moments) {
-                    const dayCard = createActivityDayCard(day, moments, currentDay, tomorrowDay);
-                    activitiesGrid.appendChild(dayCard);
-                }
-            }
-            
-            activityWeek.appendChild(activitiesGrid);
-            activitiesContent.appendChild(activityWeek);
-        }
-
-        // Create activity day card
-        function createActivityDayCard(day, moments, currentDay, tomorrowDay) {
-            const card = document.createElement('div');
-            let cardClass = 'activity-day-card';
-            
-            if (day === currentDay) {
-                cardClass += ' today';
-            } else if (day === tomorrowDay) {
-                cardClass += ' tomorrow';
-            }
-            
-            card.className = cardClass;
-            
-            let momentsHTML = '';
-            for (let i = 0; i < moments.length && i < ACTIVITY_MOMENTS.length; i++) {
-                momentsHTML += `
-                    <div class="activity-moment">
-                        <div class="activity-moment-title">${ACTIVITY_MOMENTS[i]}</div>
-                        <div class="activity-moment-content">${moments[i]}</div>
-                    </div>`;
-            }
-            
-            card.innerHTML = `
-                <h3>${day}</h3>
-                ${momentsHTML}
-            `;
-            
-            return card;
-        }
-
-        // Open combination modal
         function openCombinationModal(combinationId = null) {
             const modal = document.getElementById('combination-modal');
             const form = document.getElementById('combination-form');
+            const modalTitle = document.getElementById('modal-title');
             
             if (combinationId) {
                 // Edit mode
@@ -2559,29 +881,599 @@
                     document.getElementById('combination-menu').value = combination.menuType;
                     document.getElementById('combination-activity').value = combination.activityGroup;
                 }
+                modalTitle.textContent = 'Modifica Preferito';
             } else {
-                // Add mode
+                // Create mode
                 editingCombinationId = null;
                 form.reset();
+                modalTitle.textContent = '';
             }
             
             modal.classList.add('active');
         }
 
-        // Close combination modal
         function closeCombinationModal() {
             const modal = document.getElementById('combination-modal');
             modal.classList.remove('active');
             editingCombinationId = null;
         }
 
-        // Handle combination form submit
+        async function loadMenuData() {
+            try {
+                const timestamp = Date.now();
+                const [nidoResponse, infanziaResponse] = await Promise.all([
+                    fetch(`menu-nido.txt?t=${timestamp}`),
+                    fetch(`menu-infanzia.txt?t=${timestamp}`)
+                ]);
+                
+                const nidoText = await nidoResponse.text();
+                const infanziaText = await infanziaResponse.text();
+                
+                MENU_NIDO = parseMenuData(nidoText);
+                MENU_INFANZIA = parseMenuData(infanziaText);
+                console.log('Menu data loaded:', { 
+                    nido: Object.keys(MENU_NIDO).length, 
+                    infanzia: Object.keys(MENU_INFANZIA).length 
+                });
+            } catch (error) {
+                console.error('Error loading menu data:', error);
+            }
+        }
+
+        function parseMenuData(text) {
+            const menu = {};
+            const lines = text.split('\n');
+            
+            const dayMap = {
+                '1': 'Lunedì',
+                '2': 'Martedì', 
+                '3': 'Mercoledì',
+                '4': 'Giovedì',
+                '5': 'Venerdì'
+            };
+            
+            for (const line of lines) {
+                if (line.trim() === '' || line.startsWith('#')) {
+                    continue;
+                }
+                
+                const parts = line.split('|').map(p => p.trim());
+                if (parts.length >= 5) {
+                    const weekNum = parseInt(parts[0]);
+                    const dayNum = parts[1];
+                    const primo = parts[2];
+                    const secondo = parts[3];
+                    const frutta = parts[4];
+                    
+                    if (weekNum >= 1 && weekNum <= 4 && dayMap[dayNum]) {
+                        if (!menu[weekNum]) {
+                            menu[weekNum] = {};
+                        }
+                        menu[weekNum][dayMap[dayNum]] = { primo, secondo, frutta };
+                    }
+                }
+            }
+            
+            return menu;
+        }
+
+        async function loadActivitiesData() {
+            try {
+                const timestamp = Date.now();
+                const response = await fetch(`activities.txt?t=${timestamp}`);
+                const text = await response.text();
+                ACTIVITIES = parseActivitiesData(text);
+                console.log('Activities data loaded:', Object.keys(ACTIVITIES).length);
+            } catch (error) {
+                console.error('Error loading activities data:', error);
+            }
+        }
+
+        function parseActivitiesData(text) {
+            const activities = {};
+            const lines = text.split('\n');
+            
+            // Day mapping (1=Lunedì, 2=Martedì, etc.)
+            const dayMap = {
+                '1': 'Lunedì',
+                '2': 'Martedì', 
+                '3': 'Mercoledì',
+                '4': 'Giovedì',
+                '5': 'Venerdì',
+                '6': 'Sabato'
+            };
+            
+            for (const line of lines) {
+                if (line.trim() === '' || line.startsWith('#')) {
+                    continue;
+                }
+                
+                // Parse format: gruppo|giorno|attivita_mattino|attivita_pomeriggio
+                const parts = line.split('|').map(p => p.trim());
+                if (parts.length >= 4) {
+                    const group = parts[0];
+                    const dayNum = parts[1];
+                    const mattino = parts[2];
+                    const pomeriggio = parts[3];
+                    
+                    if (dayMap[dayNum]) {
+                        if (!activities[group]) {
+                            activities[group] = {};
+                        }
+                        
+                        const dayName = dayMap[dayNum];
+                        
+                        // Store activities as separate morning and afternoon items
+                        activities[group][dayName] = {
+                            mattino: mattino !== '-' ? mattino : null,
+                            pomeriggio: pomeriggio !== '-' ? pomeriggio : null
+                        };
+                    }
+                }
+            }
+            
+            return activities;
+        }
+
+        // Display functions
+        function displayFavorites() {
+            const favoritesContent = document.getElementById('favorites-content');
+            const createContainer = document.getElementById('create-favorite-container');
+            
+            if (combinations.length === 0) {
+                favoritesContent.innerHTML = `
+                    <div class="loading">Nessun preferito salvato. Clicca su "Crea il tuo Preferito" per iniziare!</div>
+                `;
+                createContainer.style.display = 'block';
+                return;
+            }
+            
+            // Show create button at bottom if there are favorites
+            createContainer.style.display = 'block';
+            
+            let html = '<div class="combinations-grid">';
+            combinations.forEach(combination => {
+                const currentData = getCurrentMenuAndActivities(combination.menuType, combination.activityGroup);
+                
+                html += `
+                    <div class="combination-card">
+                        <button class="delete-icon" onclick="openDeleteModal('${combination.id}')" title="Rimuovi preferito">×</button>
+                        <h3>${combination.name}</h3>
+                        
+                        <div class="current-info today-info-${combination.id}">
+                            <h4>Oggi - ${currentData.today.day} <button class="mini-toggle-btn" style="float: right;" onmousedown="showTomorrowTemporarily('${combination.id}')" onmouseup="hideTomorrowTemporarily('${combination.id}')" onmouseleave="hideTomorrowTemporarily('${combination.id}')" ontouchstart="showTomorrowTemporarily('${combination.id}')" ontouchend="hideTomorrowTemporarily('${combination.id}')" ontouchcancel="hideTomorrowTemporarily('${combination.id}')">Domani</button></h4>
+                            ${currentData.today.menu ? `
+                                <div class="menu-list">
+                                    <p class="menu-item">${currentData.today.menu.primo}</p>
+                                    <p class="menu-item">${currentData.today.menu.secondo}</p>
+                                    <p class="menu-item">${currentData.today.menu.frutta}</p>
+                                </div>
+                            ` : '<p class="no-data">Nessun menu oggi</p>'}
+                            ${currentData.today.activity ? `
+                                <div class="activity-preview">
+                                    <strong>Attività:</strong><br>
+                                    <small>${currentData.today.activity.replace(/<br>/g, ' • ')}</small>
+                                </div>
+                            ` : '<p class="no-data">Nessuna attività oggi</p>'}
+                        </div>
+                        
+                        <div class="current-info tomorrow-info-${combination.id}" style="display: none;">
+                            <h4>Domani - ${currentData.tomorrow.day}</h4>
+                            ${currentData.tomorrow.menu ? `
+                                <div class="menu-list">
+                                    <p class="menu-item">${currentData.tomorrow.menu.primo}</p>
+                                    <p class="menu-item">${currentData.tomorrow.menu.secondo}</p>
+                                    <p class="menu-item">${currentData.tomorrow.menu.frutta}</p>
+                                </div>
+                            ` : '<p class="no-data">Nessun menu domani</p>'}
+                            ${currentData.tomorrow.activity ? `
+                                <div class="activity-preview">
+                                    <strong>Attività:</strong><br>
+                                    <small>${currentData.tomorrow.activity.replace(/<br>/g, ' • ')}</small>
+                                </div>
+                            ` : '<p class="no-data">Nessuna attività domani</p>'}
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            
+            favoritesContent.innerHTML = html;
+        }
+
+        let showTomorrowTimer = null;
+
+        function showTomorrowTemporarily(combinationId) {
+            clearTomorrowTimer();
+            
+            // For desktop, start a timer to show tomorrow after 500ms of holding
+            showTomorrowTimer = setTimeout(() => {
+                const todayInfo = document.querySelector(`.today-info-${combinationId}`);
+                const tomorrowInfo = document.querySelector(`.tomorrow-info-${combinationId}`);
+                
+                if (todayInfo && tomorrowInfo) {
+                    todayInfo.style.display = 'none';
+                    tomorrowInfo.style.display = 'block';
+                }
+            }, 500);
+        }
+
+        function hideTomorrowTemporarily(combinationId) {
+            clearTomorrowTimer();
+            
+            const todayInfo = document.querySelector(`.today-info-${combinationId}`);
+            const tomorrowInfo = document.querySelector(`.tomorrow-info-${combinationId}`);
+            
+            if (todayInfo && tomorrowInfo) {
+                todayInfo.style.display = 'block';
+                tomorrowInfo.style.display = 'none';
+            }
+        }
+
+        function clearTomorrowTimer() {
+            if (showTomorrowTimer) {
+                clearTimeout(showTomorrowTimer);
+                showTomorrowTimer = null;
+            }
+        }
+
+
+        function getActivityGroupName(group) {
+            const names = {
+                'nido': 'Nido',
+                'primavera': 'Primavera',
+                'infanzia1': 'Infanzia 1',
+                'infanzia2': 'Infanzia 2'
+            };
+            return names[group] || group;
+        }
+
+        function openDeleteModal(combinationId) {
+            deleteTargetId = combinationId;
+            const modal = document.getElementById('delete-modal');
+            modal.classList.add('active');
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('delete-modal');
+            modal.classList.remove('active');
+            deleteTargetId = null;
+        }
+
+        function confirmDelete() {
+            if (deleteTargetId) {
+                combinations = combinations.filter(c => c.id !== deleteTargetId);
+                saveCombinations();
+                displayFavorites();
+                closeDeleteModal();
+            }
+        }
+
+        function deleteCombination(combinationId) {
+            // This function is kept for compatibility but no longer used
+            combinations = combinations.filter(c => c.id !== combinationId);
+            saveCombinations();
+            displayFavorites();
+        }
+
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        function getCurrentMenuAndActivities(menuType, activityGroup) {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const currentWeek = getWeekNumber(today);
+            const tomorrowWeek = getWeekNumber(tomorrow);
+            
+            const todayDay = getCurrentDay(today);
+            const tomorrowDay = getCurrentDay(tomorrow);
+            
+            // Get menu data
+            const menuData = menuType === 'nido' ? MENU_NIDO : MENU_INFANZIA;
+            let todayMenu = null;
+            let tomorrowMenu = null;
+            
+            if (menuData[currentWeek] && menuData[currentWeek][todayDay]) {
+                todayMenu = menuData[currentWeek][todayDay];
+            }
+            
+            if (menuData[tomorrowWeek] && menuData[tomorrowWeek][tomorrowDay]) {
+                tomorrowMenu = menuData[tomorrowWeek][tomorrowDay];
+            }
+            
+            // Get activities data
+            const activitiesData = ACTIVITIES[activityGroup];
+            let todayActivity = null;
+            let tomorrowActivity = null;
+            
+            if (activitiesData && activitiesData[todayDay]) {
+                const activities = activitiesData[todayDay];
+                let content = '';
+                
+                if (activities.mattino && activities.pomeriggio) {
+                    content = `Mattino: ${activities.mattino}<br>Pomeriggio: ${activities.pomeriggio}`;
+                } else if (activities.mattino) {
+                    content = `Mattino: ${activities.mattino}`;
+                } else if (activities.pomeriggio) {
+                    content = `Pomeriggio: ${activities.pomeriggio}`;
+                } else {
+                    content = 'Nessuna attività programmata';
+                }
+                
+                todayActivity = content;
+            }
+            
+            if (activitiesData && activitiesData[tomorrowDay]) {
+                const activities = activitiesData[tomorrowDay];
+                let content = '';
+                
+                if (activities.mattino && activities.pomeriggio) {
+                    content = `Mattino: ${activities.mattino}<br>Pomeriggio: ${activities.pomeriggio}`;
+                } else if (activities.mattino) {
+                    content = `Mattino: ${activities.mattino}`;
+                } else if (activities.pomeriggio) {
+                    content = `Pomeriggio: ${activities.pomeriggio}`;
+                } else {
+                    content = 'Nessuna attività programmata';
+                }
+                
+                tomorrowActivity = content;
+            }
+            
+            return {
+                today: { menu: todayMenu, activity: todayActivity, day: todayDay },
+                tomorrow: { menu: tomorrowMenu, activity: tomorrowActivity, day: tomorrowDay }
+            };
+        }
+
+        // Display functions
+        function displayQuickView() {
+            const quickView = document.getElementById('quick-view');
+            const today = new Date();
+            const currentWeek = getWeekNumber(today);
+            const currentDay = getCurrentDay(today);
+            
+            console.log('Displaying quick view:', { currentWeek, currentDay, currentMenuType });
+            
+            quickView.innerHTML = '';
+            
+            const quickViewHeader = document.createElement('div');
+            quickViewHeader.className = 'quick-view-header';
+            quickViewHeader.innerHTML = `<h2>Settimana ${currentWeek}</h2>`;
+            quickView.appendChild(quickViewHeader);
+            
+            const menuContainer = document.createElement('div');
+            menuContainer.className = 'menu-container';
+            
+            const dayOrder = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'];
+            const menuData = currentMenuType === 'nido' ? MENU_NIDO : MENU_INFANZIA;
+            
+            for (const day of dayOrder) {
+                if (menuData[currentWeek] && menuData[currentWeek][day]) {
+                    const dayCard = createDayCard(day, menuData[currentWeek][day], currentDay);
+                    menuContainer.appendChild(dayCard);
+                }
+            }
+            
+            quickView.appendChild(menuContainer);
+        }
+
+        function createDayCard(day, menu, currentDay) {
+            const dayCard = document.createElement('div');
+            dayCard.className = 'day-card';
+            
+            if (day === currentDay) {
+                dayCard.classList.add('today');
+            }
+            
+            dayCard.innerHTML = `
+                <h2>${day}</h2>
+                <div class="menu-list">
+                    <p class="menu-item">${menu.primo}</p>
+                    <p class="menu-item">${menu.secondo}</p>
+                    <p class="menu-item">${menu.frutta}</p>
+                </div>
+            `;
+            
+            return dayCard;
+        }
+
+        function displayActivities() {
+            const activitiesContent = document.getElementById('activities-content');
+            const today = new Date();
+            const currentDay = getCurrentDay(today);
+            
+            console.log('Displaying activities:', { currentDay, currentActivityGroup });
+            
+            activitiesContent.innerHTML = '';
+            
+            const activitiesGrid = document.createElement('div');
+            activitiesGrid.className = 'activities-grid';
+            
+            const dayOrder = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+            const activitiesData = ACTIVITIES[currentActivityGroup];
+            
+            for (const day of dayOrder) {
+                if (activitiesData && activitiesData[day]) {
+                    const dayCard = createActivityDayCard(day, activitiesData[day], currentDay);
+                    activitiesGrid.appendChild(dayCard);
+                }
+            }
+            
+            activitiesContent.appendChild(activitiesGrid);
+        }
+
+        function createActivityDayCard(day, activities, currentDay) {
+            const dayCard = document.createElement('div');
+            dayCard.className = 'activity-day-card';
+            
+            if (day === currentDay) {
+                dayCard.classList.add('today');
+            }
+            
+            let html = `<h3>${day}</h3>`;
+            
+            // Add Mattino section if there's a morning activity
+            if (activities.mattino) {
+                html += `
+                    <div class="activity-moment">
+                        <div class="activity-moment-title">🌅 Mattino</div>
+                        <div class="activity-moment-content">${activities.mattino}</div>
+                    </div>
+                `;
+            }
+            
+            // Add Pomeriggio section if there's an afternoon activity
+            if (activities.pomeriggio) {
+                html += `
+                    <div class="activity-moment">
+                        <div class="activity-moment-title">🌇 Pomeriggio</div>
+                        <div class="activity-moment-content">${activities.pomeriggio}</div>
+                    </div>
+                `;
+            }
+            
+            // If no activities at all
+            if (!activities.mattino && !activities.pomeriggio) {
+                html += `
+                    <div class="activity-moment">
+                        <div class="activity-moment-content">Nessuna attività programmata</div>
+                    </div>
+                `;
+            }
+            
+            dayCard.innerHTML = html;
+            
+            return dayCard;
+        }
+
+        // Tab switching
+        async function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update tab buttons
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const clickedTab = document.querySelector(`[data-tab="${tab}"]`);
+            if (clickedTab) {
+                clickedTab.classList.add('active');
+            }
+            
+            // Hide all sections
+            document.getElementById('favorites-section').classList.add('hidden');
+            document.getElementById('menu-section').classList.add('hidden');
+            document.getElementById('activities-section').classList.add('hidden');
+            
+            // Show selected section
+            if (tab === 'favorites') {
+                document.getElementById('favorites-section').classList.remove('hidden');
+                // Ensure data is loaded before displaying favorites
+                if (Object.keys(MENU_NIDO).length === 0 || Object.keys(MENU_INFANZIA).length === 0 || Object.keys(ACTIVITIES).length === 0) {
+                    await loadMenuData();
+                    await loadActivitiesData();
+                }
+                displayFavorites();
+            } else if (tab === 'menu') {
+                document.getElementById('menu-section').classList.remove('hidden');
+                if (Object.keys(MENU_NIDO).length === 0 || Object.keys(MENU_INFANZIA).length === 0) {
+                    await loadMenuData();
+                }
+                displayQuickView();
+            } else if (tab === 'activities') {
+                document.getElementById('activities-section').classList.remove('hidden');
+                if (Object.keys(ACTIVITIES).length === 0) {
+                    await loadActivitiesData();
+                }
+                displayActivities();
+            }
+        }
+
+        // Menu type selection
+        function selectMenuType(type) {
+            currentMenuType = type;
+            
+            // Update selector buttons
+            document.querySelectorAll('#menu-section .selector-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const clickedBtn = document.querySelector(`#menu-section [data-menu-type="${type}"]`);
+            if (clickedBtn) {
+                clickedBtn.classList.add('active');
+            }
+            
+            displayQuickView();
+        }
+
+        // Activity group selection
+        function selectActivityGroup(group) {
+            currentActivityGroup = group;
+            
+            // Update selector buttons
+            document.querySelectorAll('#activities-section .selector-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const clickedBtn = document.querySelector(`#activities-section [data-activity-group="${group}"]`);
+            if (clickedBtn) {
+                clickedBtn.classList.add('active');
+            }
+            
+            displayActivities();
+        }
+
+        // Initialize app
+        async function initApp() {
+            console.log('Initializing app...');
+            await loadWeekConfig();
+            await loadMenuData();
+            await loadActivitiesData();
+            loadCombinations();
+            
+            // Display favorites on initial load since favorites tab is active by default
+            displayFavorites();
+            
+            console.log('App initialized successfully');
+        }
+
+        // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('combination-form');
-            form.addEventListener('submit', function(e) {
+            console.log('DOM loaded');
+            
+            // Tab navigation
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.addEventListener('click', async function() {
+                    const tabName = this.getAttribute('data-tab');
+                    await switchTab(tabName);
+                });
+            });
+            
+            // Menu type selector
+            document.querySelectorAll('#menu-section .selector-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const menuType = this.getAttribute('data-menu-type');
+                    selectMenuType(menuType);
+                });
+            });
+            
+            // Activity group selector
+            document.querySelectorAll('#activities-section .selector-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const activityGroup = this.getAttribute('data-activity-group');
+                    selectActivityGroup(activityGroup);
+                });
+            });
+            
+            // Combination form submit
+            document.getElementById('combination-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                const name = document.getElementById('combination-name').value.trim();
+                const name = document.getElementById('combination-name').value;
                 const menuType = document.getElementById('combination-menu').value;
                 const activityGroup = document.getElementById('combination-activity').value;
                 
@@ -2589,509 +1481,41 @@
                     // Update existing combination
                     const index = combinations.findIndex(c => c.id === editingCombinationId);
                     if (index !== -1) {
-                        combinations[index] = {
-                            ...combinations[index],
-                            name,
-                            menuType,
-                            activityGroup
-                        };
+                        combinations[index] = { ...combinations[index], name, menuType, activityGroup };
                     }
                 } else {
-                    // Add new combination
-                    combinations.push({
+                    // Create new combination
+                    const newCombination = {
                         id: generateId(),
                         name,
                         menuType,
-                        activityGroup
-                    });
+                        activityGroup,
+                        createdAt: new Date().toISOString()
+                    };
+                    combinations.push(newCombination);
                 }
                 
                 saveCombinations();
-                closeCombinationModal();
-                
-                // Update favorites if visible
-                if (currentTab === 'favorites') {
-                    displayFavorites();
-                }
-            });
-
-            // Close modal when clicking outside
-            const modal = document.getElementById('combination-modal');
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    closeCombinationModal();
-                }
-            });
-        });
-
-        // Delete combination
-        function deleteCombination(combinationId) {
-            combinations = combinations.filter(c => c.id !== combinationId);
-            saveCombinations();
-            
-            // Update favorites if visible
-            if (currentTab === 'favorites') {
                 displayFavorites();
-            }
-        }
-
-        // Move combination up
-        function moveCombinationUp(combinationId) {
-            const index = combinations.findIndex(c => c.id === combinationId);
-            if (index > 0) {
-                // Swap with previous
-                [combinations[index - 1], combinations[index]] = [combinations[index], combinations[index - 1]];
-                saveCombinations();
-                
-                // Update favorites if visible
-                if (currentTab === 'favorites') {
-                    displayFavorites();
-                }
-            }
-        }
-
-        // Move combination down
-        function moveCombinationDown(combinationId) {
-            const index = combinations.findIndex(c => c.id === combinationId);
-            if (index >= 0 && index < combinations.length - 1) {
-                // Swap with next
-                [combinations[index], combinations[index + 1]] = [combinations[index + 1], combinations[index]];
-                saveCombinations();
-                
-                // Update favorites if visible
-                if (currentTab === 'favorites') {
-                    displayFavorites();
-                }
-            }
-        }
-
-
-        // Display favorites (combined daily view of menu and activities)
-        function displayFavorites() {
-            const container = document.getElementById('favorites-content');
-            container.innerHTML = '';
-            
-            if (combinations.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 3rem;">
-                        <button class="add-combination-btn" onclick="openCombinationModal()" style="display: inline-block;">
-                            ➕ Aggiungi
-                        </button>
-                    </div>
-                `;
-                return;
-            }
-            
-            const today = new Date();
-            const currentDay = getCurrentDay(today);
-            
-            // Create tabs container
-            const tabsContainer = document.createElement('div');
-            tabsContainer.className = 'favorites-tabs-container';
-            
-            // Create tabs bar
-            const tabsBar = document.createElement('div');
-            tabsBar.className = 'favorites-tabs';
-            
-            // Create tabs
-            combinations.forEach((combination, index) => {
-                const tabBtn = document.createElement('button');
-                tabBtn.className = `favorite-tab-btn ${index === 0 ? 'active' : ''}`;
-                tabBtn.textContent = `⭐ ${combination.name}`;
-                tabBtn.onclick = () => switchFavoriteTab(combination.id);
-                tabsBar.appendChild(tabBtn);
+                closeCombinationModal();
             });
             
-            tabsContainer.appendChild(tabsBar);
-            
-            // Create tab contents
-            combinations.forEach((combination, index) => {
-                const tabContent = document.createElement('div');
-                tabContent.className = `favorites-tab-content ${index === 0 ? 'active' : ''}`;
-                tabContent.id = `favorite-tab-${combination.id}`;
-                
-                // Determine if toggle should be shown (only Monday-Friday)
-                const dayIndex = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'].indexOf(currentDay);
-                const showToggle = dayIndex >= 0 && dayIndex < 4; // Monday to Thursday
-                
-                // Create toggle HTML
-                const toggleHTML = showToggle ? `
-                    <div class="day-toggle">
-                        <button class="day-toggle-btn active" onclick="toggleFavoriteDay('${combination.id}', 'today')">
-                            📅 Oggi
-                        </button>
-                        <button class="day-toggle-btn" onclick="toggleFavoriteDay('${combination.id}', 'tomorrow')">
-                            📅 Domani
-                        </button>
-                    </div>
-                ` : '';
-                
-                tabContent.innerHTML = `
-                    <div class="favorite-combination">
-                        <button class="favorite-delete-btn" onclick="deleteCombination('${combination.id}')" title="Elimina">×</button>
-                        ${toggleHTML}
-                        <div id="day-content-${combination.id}">
-                            <!-- Content will be loaded here -->
-                        </div>
-                    </div>
-                `;
-                
-                tabsContainer.appendChild(tabContent);
-            });
-            
-            container.appendChild(tabsContainer);
-            
-            // Add button at the end
-            const addButtonAtEnd = document.createElement('div');
-            addButtonAtEnd.style.cssText = 'text-align: center; margin-top: 2rem;';
-            addButtonAtEnd.innerHTML = '<button class="add-combination-btn" onclick="openCombinationModal()">➕ Aggiungi</button>';
-            container.appendChild(addButtonAtEnd);
-            
-            // Load content for all favorites
-            combinations.forEach(combination => {
-                loadFavoriteDayContent(combination.id, 'today');
-            });
-        }
-
-        // Switch between favorite tabs
-        function switchFavoriteTab(combinationId) {
-            // Update tab buttons
-            const tabButtons = document.querySelectorAll('.favorite-tab-btn');
-            const tabContents = document.querySelectorAll('.favorites-tab-content');
-            
-            tabButtons.forEach((btn, index) => {
-                const combination = combinations[index];
-                if (combination && combination.id === combinationId) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-            
-            // Update tab contents
-            tabContents.forEach(content => {
-                if (content.id === `favorite-tab-${combinationId}`) {
-                    content.classList.add('active');
-                } else {
-                    content.classList.remove('active');
-                }
-            });
-        }
-
-        // Load content for a specific day in favorites
-        function loadFavoriteDayContent(combinationId, dayType) {
-            const combination = combinations.find(c => c.id === combinationId);
-            if (!combination) return;
-            
-            const today = new Date();
-            const currentDay = getCurrentDay(today);
-            const currentWeek = getWeekNumber(today);
-            const isWeekendDay = isWeekend(today);
-            
-            // Calculate display day and week
-            let displayDay = currentDay;
-            let displayWeek = currentWeek;
-            let dayLabel = '';
-            
-            if (isWeekendDay) {
-                // If Sunday, show next Monday (tomorrow)
-                const nextMonday = new Date(today);
-                nextMonday.setDate(today.getDate() + 1);
-                displayWeek = getWeekNumber(nextMonday);
-                displayDay = 'Lunedì';
-                dayLabel = 'Domani - Lunedì';
-            } else if (dayType === 'tomorrow') {
-                // Get tomorrow
-                const tomorrow = getTomorrowDay(today);
-                const tomorrowDate = new Date(today);
-                tomorrowDate.setDate(today.getDate() + 1);
-                displayWeek = getWeekNumber(tomorrowDate);
-                displayDay = tomorrow;
-                dayLabel = `Domani - ${tomorrow}`;
-            } else {
-                // Today
-                dayLabel = displayDay === 'Sabato' ? 'Oggi - Sabato' : `Oggi - ${displayDay}`;
-            }
-            
-            // Get menu data
-            const menuData = combination.menuType === 'nido' ? MENU_NIDO : MENU_INFANZIA;
-            const dayMenu = (displayDay !== 'Sabato') ? (menuData[displayWeek] && menuData[displayWeek][displayDay]) : null;
-            
-            // Get activities data
-            const dayActivities = ACTIVITIES[combination.activityGroup] && ACTIVITIES[combination.activityGroup][displayDay];
-            
-            // Create menu HTML (solo se non è sabato)
-            let menuHTML = '';
-            if (dayMenu) {
-                menuHTML = `
-                    <div class="favorite-menu-items">
-                        <div class="meal">
-                            <h4>🍝 Primo</h4>
-                            <p>${dayMenu.primo}</p>
-                        </div>
-                        <div class="meal">
-                            <h4>🍖 Secondo</h4>
-                            <p>${dayMenu.secondo}</p>
-                        </div>`;
-                
-                if (dayMenu.contorno) {
-                    menuHTML += `
-                        <div class="meal">
-                            <h4>🥗 Contorno</h4>
-                            <p>${dayMenu.contorno}</p>
-                        </div>`;
-                }
-                
-                menuHTML += `
-                        <div class="meal">
-                            <h4>🍎 Frutta</h4>
-                            <p>${dayMenu.frutta}</p>
-                        </div>
-                    </div>`;
-            } else {
-                menuHTML = '<p class="no-data-message">Dati menu non disponibili</p>';
-            }
-            
-            // Create activities HTML
-            let activitiesHTML = '';
-            if (dayActivities && dayActivities.length > 0) {
-                activitiesHTML = '<div class="favorite-activities-list">';
-                for (let i = 0; i < dayActivities.length && i < ACTIVITY_MOMENTS.length; i++) {
-                    activitiesHTML += `
-                        <div class="activity-moment">
-                            <div class="activity-moment-title">${ACTIVITY_MOMENTS[i]}</div>
-                            <div class="activity-moment-content">${dayActivities[i]}</div>
-                        </div>`;
-                }
-                activitiesHTML += '</div>';
-            } else {
-                activitiesHTML = '<p class="no-data-message">Dati attività non disponibili</p>';
-            }
-            
-            // Update content
-            const contentDiv = document.getElementById(`day-content-${combinationId}`);
-            if (contentDiv) {
-                // Se è sabato, mostra solo attività (senza menu)
-                if (displayDay === 'Sabato') {
-                    contentDiv.innerHTML = `
-                        <div class="favorite-activities-section" style="max-width: 800px; margin: 0 auto;">
-                            <div class="favorite-section-title">
-                                <span>🎨 Attività del Giorno</span>
-                            </div>
-                            ${activitiesHTML}
-                        </div>
-                    `;
-                } else {
-                    // Altri giorni: mostra menu e attività
-                    contentDiv.innerHTML = `
-                        <div class="favorite-day-view">
-                            <div class="favorite-menu-section">
-                                <div class="favorite-section-title">
-                                    <span>🍽️ Menu del Giorno</span>
-                                </div>
-                                ${menuHTML}
-                            </div>
-                            <div class="favorite-activities-section">
-                                <div class="favorite-section-title">
-                                    <span>🎨 Attività del Giorno</span>
-                                </div>
-                                ${activitiesHTML}
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-        }
-
-        // Toggle between today and tomorrow in favorites
-        function toggleFavoriteDay(combinationId, dayType) {
-            // Update button states
-            const card = document.getElementById(`favorite-${combinationId}`);
-            if (card) {
-                const buttons = card.querySelectorAll('.day-toggle-btn');
-                buttons.forEach(btn => {
-                    btn.classList.remove('active');
-                    if ((dayType === 'today' && btn.textContent.includes('Oggi')) ||
-                        (dayType === 'tomorrow' && btn.textContent.includes('Domani'))) {
-                        btn.classList.add('active');
-                    }
-                });
-            }
-            
-            // Load content for selected day
-            loadFavoriteDayContent(combinationId, dayType);
-        }
-
-        // View combination menu
-        function viewCombinationMenu(combinationId) {
-            const combination = combinations.find(c => c.id === combinationId);
-            if (combination) {
-                currentMenuType = combination.menuType;
-                switchTab('menu');
-                
-                // Update menu selector
-                document.querySelectorAll('#menu-section .selector-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                document.querySelector(`#menu-section .selector-btn[onclick*="${combination.menuType}"]`)?.classList.add('active');
-                
-                displayQuickView();
-            }
-        }
-
-        // View combination activities
-        function viewCombinationActivities(combinationId) {
-            const combination = combinations.find(c => c.id === combinationId);
-            if (combination) {
-                currentActivityGroup = combination.activityGroup;
-                switchTab('activities');
-                
-                // Update activity selector
-                document.querySelectorAll('#activities-section .selector-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                document.querySelector(`#activities-section .selector-btn[onclick*="${combination.activityGroup}"]`)?.classList.add('active');
-                
-                displayActivities();
-            }
-        }
-
-        // Initialize app: load menu and display
-        async function initApp() {
-            await loadWeekConfig();
-            loadCombinations();
-            await loadAllDataFiles();
-            displayFavorites(); // Mostra preferiti invece di quick view
-            
-            // Display configured date in footer
-            const configDateElement = document.getElementById('config-date');
-            if (configDateElement) {
-                const startDate = new Date(WEEK_1_MONDAY);
-                const formattedDate = startDate.toLocaleDateString('it-IT', { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                });
-                configDateElement.textContent = formattedDate;
-            }
-        }
-
-        // Start app when page loads
-        initApp();
+            // Start app
+            initApp();
+        });
     </script>
-    
-    <!-- PWA Service Worker Registration -->
     <script>
+        // Register service worker
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                // Forza controllo aggiornamenti service worker ogni volta
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then((registration) => {
-                        console.log('Service Worker registrato con successo:', registration.scope);
-                        
-                        // Controlla aggiornamenti ogni volta che si apre l'app
-                        registration.update();
-                        
-                        // Se c'è un nuovo service worker in attesa, attivalo
-                        if (registration.waiting) {
-                            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-                        }
-                        
-                        // Ascolta per nuovi service worker
-                        registration.addEventListener('updatefound', () => {
-                            const newWorker = registration.installing;
-                            newWorker.addEventListener('statechange', () => {
-                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    // Nuovo service worker disponibile - ricarica la pagina
-                                    console.log('Nuovo service worker disponibile, ricarico...');
-                                    window.location.reload();
-                                }
-                            });
-                        });
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
                     })
-                    .catch((error) => {
-                        console.log('Registrazione Service Worker fallita:', error);
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
                     });
-                
-                // Ricarica quando il service worker prende il controllo
-                let refreshing = false;
-                navigator.serviceWorker.addEventListener('controllerchange', () => {
-                    if (!refreshing) {
-                        refreshing = true;
-                        window.location.reload();
-                    }
-                });
             });
-        }
-        
-        // PWA Install Prompt Handler
-        let deferredPrompt;
-        let hideButtonTimeout;
-        const installButton = document.getElementById('btn-install');
-        
-        // Intercetta l'evento beforeinstallprompt
-        window.addEventListener('beforeinstallprompt', (e) => {
-            // Previeni il prompt automatico del browser
-            e.preventDefault();
-            // Salva l'evento per poterlo utilizzare dopo
-            deferredPrompt = e;
-            // Mostra il pulsante di installazione
-            installButton.style.display = 'block';
-            console.log('Prompt di installazione catturato');
-            
-            // Nascondi il button automaticamente dopo 15 secondi
-            hideButtonTimeout = setTimeout(() => {
-                installButton.style.display = 'none';
-                console.log('Button installa nascosto dopo 15 secondi');
-            }, 15000);
-        });
-        
-        // Gestisci il click sul pulsante di installazione
-        installButton.addEventListener('click', async () => {
-            if (!deferredPrompt) {
-                console.log('Nessun prompt di installazione disponibile');
-                return;
-            }
-            
-            // Cancella il timeout se l'utente clicca prima dei 15 secondi
-            if (hideButtonTimeout) {
-                clearTimeout(hideButtonTimeout);
-            }
-            
-            // Mostra il prompt di installazione
-            deferredPrompt.prompt();
-            
-            // Aspetta la scelta dell'utente
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`Scelta utente: ${outcome}`);
-            
-            if (outcome === 'accepted') {
-                console.log('Utente ha accettato l\'installazione');
-            } else {
-                console.log('Utente ha rifiutato l\'installazione');
-            }
-            
-            // Resetta il prompt
-            deferredPrompt = null;
-            // Nascondi il pulsante
-            installButton.style.display = 'none';
-        });
-        
-        // Nascondi il pulsante se l'app è già installata
-        window.addEventListener('appinstalled', () => {
-            console.log('PWA installata con successo!');
-            if (hideButtonTimeout) {
-                clearTimeout(hideButtonTimeout);
-            }
-            installButton.style.display = 'none';
-            deferredPrompt = null;
-        });
-        
-        // Controlla se l'app è già in modalità standalone (già installata)
-        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-            console.log('App già installata - nascondo pulsante');
-            installButton.style.display = 'none';
         }
     </script>
 </body>

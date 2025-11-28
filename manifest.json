@@ -1,7 +1,7 @@
 {
-  "name": "ParentLoop",
-  "short_name": "ParentLoop",
-  "description": "Consulta il menu e le attività giornaliere dell'asilo con facilità",
+  "name": "Meal & Play",
+  "short_name": "Meal & Play",
+  "description": "Consulta il menu e le attività giornaliere dell'asilo",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#FFF9E6",
