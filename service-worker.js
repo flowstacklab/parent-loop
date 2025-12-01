@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mep-v1';
+const CACHE_NAME = 'mep-v1.1';
 const urlsToCache = [];
 
 // Installazione del Service Worker
