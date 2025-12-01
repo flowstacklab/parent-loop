@@ -318,41 +318,8 @@
             font-size: 0.9rem;
         }
 
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+        .section.hidden {
             display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 25px;
-            padding: 2.5rem;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
-        }
-
-        .modal-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .modal-header h2 {
-            color: #2d3748;
-            font-size: 1.8rem;
-            font-weight: 600;
         }
 
         .form-group {
@@ -382,38 +349,6 @@
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .modal-actions {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .modal-btn {
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .modal-btn.cancel {
-            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
-            color: #4a5568;
-        }
-
-        .modal-btn.save {
-            background: linear-gradient(135deg, #ff9a56 0%, #ff8fab 100%);
-            color: white;
-            box-shadow: 0 5px 20px rgba(255, 154, 86, 0.3);
-        }
-
-        .modal-btn:hover {
-            transform: translateY(-2px);
         }
 
         .combinations-grid {
@@ -463,6 +398,101 @@
         .combination-actions .modal-btn {
             padding: 0.5rem 1rem;
             font-size: 0.9rem;
+        }
+
+        .section-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .section-btn.cancel {
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
+            color: #4a5568;
+        }
+
+        .section-btn.save {
+            background: linear-gradient(135deg, #ff9a56 0%, #ff8fab 100%);
+            color: white;
+            box-shadow: 0 5px 20px rgba(255, 154, 86, 0.3);
+        }
+
+        .section-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Modal styles for existing combination and delete modals */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 25px;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-header h2 {
+            color: #2d3748;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .modal-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn.cancel {
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
+            color: #4a5568;
+        }
+
+        .modal-btn.save {
+            background: linear-gradient(135deg, #ff9a56 0%, #ff8fab 100%);
+            color: white;
+            box-shadow: 0 5px 20px rgba(255, 154, 86, 0.3);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
         }
 
         .current-info {
@@ -738,6 +768,36 @@
                 </button>
             </div>
         </section>
+
+            <!-- Full Menu Section -->
+            <section id="full-menu-section" class="section hidden">
+                <div style="margin-bottom: 2rem;">
+                    <button class="section-btn cancel" onclick="showFavorites()" style="margin-bottom: 1rem;">
+                        ← Torna ai Preferiti
+                    </button>
+                    <div class="modal-header">
+                        <h2 id="full-menu-title">Menu</h2>
+                    </div>
+                </div>
+                <div id="full-menu-content">
+                    <div class="loading">Caricamento menu in corso...</div>
+                </div>
+            </section>
+
+            <!-- Full Activities Section -->
+            <section id="full-activities-section" class="section hidden">
+                <div style="margin-bottom: 2rem;">
+                    <button class="section-btn cancel" onclick="showFavorites()" style="margin-bottom: 1rem;">
+                        ← Torna ai Preferiti
+                    </button>
+                    <div class="modal-header">
+                        <h2 id="full-activities-title">Attività</h2>
+                    </div>
+                </div>
+                <div id="full-activities-content">
+                    <div class="loading">Caricamento attività in corso...</div>
+                </div>
+            </section>
         </main>
 
         <footer>
@@ -791,36 +851,6 @@
             <div class="modal-actions">
                 <button type="button" class="modal-btn cancel" onclick="closeDeleteModal()">Annulla</button>
                 <button type="button" class="modal-btn save" onclick="confirmDelete()">Elimina</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Full Menu Modal -->
-    <div id="full-menu-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="full-menu-title">Menu Completo</h2>
-            </div>
-            <div id="full-menu-content">
-                <div class="loading">Caricamento menu in corso...</div>
-            </div>
-            <div class="modal-actions">
-                <button type="button" class="modal-btn cancel" onclick="closeFullMenuModal()">Chiudi</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Full Activities Modal -->
-    <div id="full-activities-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="full-activities-title">Attività Complete</h2>
-            </div>
-            <div id="full-activities-content">
-                <div class="loading">Caricamento attività in corso...</div>
-            </div>
-            <div class="modal-actions">
-                <button type="button" class="modal-btn cancel" onclick="closeFullActivitiesModal()">Chiudi</button>
             </div>
         </div>
     </div>
@@ -1094,11 +1124,11 @@
                         </div>
                         
                         <div class="combination-actions" style="margin-top: 1.5rem;">
-                            <button class="modal-btn save" onclick="showFullMenu('${combination.menuType}', '${menuTypeName}')" style="flex: 1;">
-                                📋 Menu Completo
+                            <button class="section-btn save" onclick="showFullMenu('${combination.menuType}', '${menuTypeName}')" style="flex: 1;">
+                                📋 Menu
                             </button>
-                            <button class="modal-btn save" onclick="showFullActivities('${combination.activityGroup}', '${activityGroupName}')" style="flex: 1;">
-                                🎯 Attività Complete
+                            <button class="section-btn save" onclick="showFullActivities('${combination.activityGroup}', '${activityGroupName}')" style="flex: 1;">
+                                🎯 Attività
                             </button>
                         </div>
                     </div>
@@ -1374,9 +1404,9 @@
                    window.navigator.standalone === true;
         }
 
-        // Full Menu Modal functions
+        // Full Menu Section functions
         function showFullMenu(menuType, menuTypeName) {
-            const modal = document.getElementById('full-menu-modal');
+            const section = document.getElementById('full-menu-section');
             const title = document.getElementById('full-menu-title');
             const content = document.getElementById('full-menu-content');
             
@@ -1385,12 +1415,9 @@
             // Display full menu for the selected type
             displayFullMenu(menuType, content);
             
-            modal.classList.add('active');
-        }
-
-        function closeFullMenuModal() {
-            const modal = document.getElementById('full-menu-modal');
-            modal.classList.remove('active');
+            // Hide favorites and show menu section
+            document.getElementById('favorites-section').classList.add('hidden');
+            section.classList.remove('hidden');
         }
 
         function displayFullMenu(menuType, container) {
@@ -1421,9 +1448,9 @@
             container.appendChild(menuContainer);
         }
 
-        // Full Activities Modal functions
+        // Full Activities Section functions
         function showFullActivities(activityGroup, activityGroupName) {
-            const modal = document.getElementById('full-activities-modal');
+            const section = document.getElementById('full-activities-section');
             const title = document.getElementById('full-activities-title');
             const content = document.getElementById('full-activities-content');
             
@@ -1432,12 +1459,9 @@
             // Display full activities for the selected group
             displayFullActivities(activityGroup, content);
             
-            modal.classList.add('active');
-        }
-
-        function closeFullActivitiesModal() {
-            const modal = document.getElementById('full-activities-modal');
-            modal.classList.remove('active');
+            // Hide favorites and show activities section
+            document.getElementById('favorites-section').classList.add('hidden');
+            section.classList.remove('hidden');
         }
 
         function displayFullActivities(activityGroup, container) {
@@ -1460,6 +1484,16 @@
             }
             
             container.appendChild(activitiesGrid);
+        }
+
+        // Show favorites section
+        function showFavorites() {
+            // Hide all sections
+            document.getElementById('full-menu-section').classList.add('hidden');
+            document.getElementById('full-activities-section').classList.add('hidden');
+            
+            // Show favorites
+            document.getElementById('favorites-section').classList.remove('hidden');
         }
 
         // Event listeners
@@ -1495,6 +1529,27 @@
                 saveCombinations();
                 displayFavorites();
                 closeCombinationModal();
+            });
+
+            // Close existing modals when clicking on background
+            document.getElementById('combination-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeCombinationModal();
+                }
+            });
+
+            document.getElementById('delete-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeDeleteModal();
+                }
+            });
+
+            // Close existing modals with ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeCombinationModal();
+                    closeDeleteModal();
+                }
             });
 
             // PWA Install button event
