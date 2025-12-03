@@ -12,11 +12,11 @@ nido|5|-|-
 nido|6|-|-
 
 # PRIMAVERA
-primavera|1|Atelier Arte|Il Giocabimbi
-primavera|2|Laboratorio La Didattica Giocata|Il Giocabimbi
-primavera|3|Laboratorio Animazione Musicale|Il Giocabimbi
-primavera|4|Laboratorio Narrazione Animata|Il Giocabimbi
-primavera|5|Atelier manipolazione creativa|Il Giocabimbi
+primavera|1|Atelier arte creativa dal rosso al blu poi farai tu|Il Giocabimbi
+primavera|2|Laboratorio La Didattica Giocata - Il tratto, scienze, stimolazione senso percettiva, Il cestino in Giardino|Il Giocabimbi
+primavera|3|Laboratorio Nella racconta salta e scarabocchia|Il Giocabimbi
+primavera|4|Laboratorio Nella DJ Animazione Musicale|Il Giocabimbi
+primavera|5|Laboratorio Palestrina|Il Giocabimbi
 primavera|6|Il Giocabimbi|-
 
 # INFANZIA 1
@@ -28,9 +28,9 @@ infanzia1|5|-|-
 infanzia1|6|-|-
 
 # INFANZIA 2
-infanzia2|1|Laboratorio Il Raccontino + Rappresentazione grafica|Laboratorio Religione
-infanzia2|2|Laboratorio Ditattica Giocata Happy English|Laboratorio 1 2 3 (propedeutico)
-infanzia2|3|Atelier Arte e Immagine|Laboratorio - Corpo e movimento
-infanzia2|4|Laboratorio Didattica Giocata A B C (propedeutico)|Laboratorio STEM Scienze e Tecnologie (propedeutico)
-infanzia2|5|Atelier Arte e Immagine|Laboratorio Cittadinanza attiva
-infanzia2|6|Il Giocambimbi|-
+infanzia2|1|Laboratorio Follettino e il suo raccontino|Laboratorio 1 2 3
+infanzia2|2|Laboratorio Happy English|Laboratorio Religione
+infanzia2|3|Laboratorio A B C|Laboratorio Corpo e movimento
+infanzia2|4|Atelier Le Manine Laboriose|Laboratorio Cittadinanza attiva
+infanzia2|5|Laboratorio A B C|Laboratorio STEM Sciente e Tecnologia
+infanzia2|6|Il Giocambimbi e/o Potenziamento didattico|-
